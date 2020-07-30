@@ -49,4 +49,9 @@
               default_value, default_value, default_value, default_value,      \
               default_value, default_value)
 
+#define __NT_STRINGIFY(x) #x
+#define NT_STRINGIFY(x) __NT_STRINGIFY(x)
+
+#define NT_LOCATION __FILE__ "(" NT_STRINGIFY(__LINE__) ")"
+
 #endif // NTUTILS_MACROS_H

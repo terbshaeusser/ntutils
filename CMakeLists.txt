@@ -4,5 +4,12 @@ project(ntutils C)
 set(CMAKE_C_STANDARD 11)
 
 add_library(ntutils
-        include/macros.h
-        )
+        include/nt/assert.h
+        include/nt/config.h
+        include/nt/macros.h
+        include/nt/panic.h
+
+        source/panic.c
+        source/mem.c include/nt/mem.h)
+
+target_include_directories(ntutils PUBLIC include)
