@@ -10,6 +10,6 @@ add_library(ntutils
         include/nt/panic.h
 
         source/panic.c
-        )
+        source/mem.c include/nt/mem.h)
 
 target_include_directories(ntutils PUBLIC include)
