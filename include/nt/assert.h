@@ -12,10 +12,9 @@
 #define P_nt_assert(condition, message, location)
 #else
 #define P_nt_assert(condition, message, location)                              \
-  if (!(condition)) {                                                          \
-    nt_panic("Assertion failed at %s\n\n%s\n\n%s", location,                   \
-             NT_STRINGIFY(condition), message ? message : "");                 \
-  }
+  if (!(condition))                                                            \
+  nt_panic("Assertion failed at %s\n\n%s\n\n%s", location,                     \
+           NT_STRINGIFY(condition), message ? message : "")
 #endif
 
 #endif // NTUTILS_ASSERT_H
