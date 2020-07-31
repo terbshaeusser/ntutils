@@ -13,12 +13,14 @@ add_library(ntutils
         include/nt/mem.h
         include/nt/panic.h
         include/nt/test.h
+        include/nt/utf8.h
 
         source/circular.c
         source/panic.c
         source/measurement.c
         source/mem.c
-        source/test.c)
+        source/test.c
+        source/utf8.c)
 
 target_include_directories(ntutils PUBLIC include)
 
@@ -39,3 +41,10 @@ add_executable(ntutils_circular_tests
 add_test(NAME ntutils_circular_tests COMMAND ntutils_str_tests)
 
 target_link_libraries(ntutils_circular_tests ntutils)
+
+add_executable(ntutils_utf8_tests
+        tests/utf8.c)
+
+add_test(NAME ntutils_utf8_tests COMMAND ntutils_str_tests)
+
+target_link_libraries(ntutils_utf8_tests ntutils)
