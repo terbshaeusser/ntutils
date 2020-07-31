@@ -4,7 +4,7 @@
 
 ### nt_assert
 
-Include: `nt/assert.h`
+Include: [nt/assert.h](../include/nt/assert.h)
 
 Parameters:
 
@@ -30,7 +30,7 @@ It is possible to install a custom allocator by overwriting the following weak f
 
 ### nt_alloc
 
-Include: `nt/mem.h`
+Include: [nt/mem.h](../include/nt/mem.h)
 
 Parameters:
 
@@ -41,14 +41,14 @@ Parameters:
 
 Return:
 
-* A pointer to the allocated memory of type `type*`.
+* (`type*`) A pointer to the allocated memory.
 
 Allocates memory on the heap with size of the given type * `count`. If the allocating failed, a panic is raised.
 
 
 ### nt_try_alloc
 
-Include: `nt/mem.h`
+Include: [nt/mem.h](../include/nt/mem.h)
 
 Parameters:
 
@@ -59,14 +59,14 @@ Parameters:
 
 Return:
 
-* A pointer to the allocated memory of type `type*` or `NULL` if the allocation failed.
+* (`type*`) A pointer to the allocated memory or `NULL` if the allocation failed.
 
 Allocates memory on the heap with size of the given type * `count`.
 
 
 ### nt_realloc
 
-Include: `nt/mem.h`
+Include: [nt/mem.h](../include/nt/mem.h)
 
 Parameters:
 
@@ -75,7 +75,7 @@ Parameters:
 
 Return:
 
-* A pointer to the resized memory of type `type*`.
+* (`typeof(ptr)`) A pointer to the resized memory.
 
 Resizes an already allocated block on the heap to a new size of the given type * `count`.
 If the resize operation fails, a panic is raised.
@@ -83,7 +83,7 @@ If the resize operation fails, a panic is raised.
 
 ### nt_try_realloc
 
-Include: `nt/mem.h`
+Include: [nt/mem.h](../include/nt/mem.h)
 
 Parameters:
 
@@ -92,14 +92,14 @@ Parameters:
 
 Return:
 
-* A pointer to the resized memory of type `type*` or `NULL` if the operation failed.
+* (`typeof(ptr)`) A pointer to the resized memory.
 
 Resizes an already allocated block on the heap to a new size of the given type * `count`.
 
 
 ### nt_free
 
-Include: `nt/mem.h`
+Include: [nt/mem.h](../include/nt/mem.h)
 
 Parameters:
 
@@ -112,7 +112,7 @@ Deallocates the block `ptr` is pointing to. Nothing happens if `ptr` is `NULL`.
 
 ### nt_push_panic_handler
 
-Include: `nt/panic.h`
+Include: [nt/panic.h](../include/nt/panic.h)
 
 Parameters:
 
@@ -127,12 +127,14 @@ reverse registration order.
 
 ### nt_pop_panic_handler
 
-Include: `nt/panic.h`
+Include: [nt/panic.h](../include/nt/panic.h)
 
 Removes the panic handler that was registered latest. Handlers are stored in a stack like structure.
 
 
 ### nt_panic
+
+Include: [nt/panic.h](../include/nt/panic.h)
 
 Parameters:
 
@@ -141,3 +143,140 @@ Parameters:
 
 Calls all registered panic handlers in reverse registration order, prints the passed message on the screen and
 terminates with the exit code specified by `NT_PANIC_EXIT_CODE`.
+
+
+## Test Helpers
+
+### nt_test
+
+Include: [nt/test.h](../include/nt/test.h)
+
+Parameters:
+
+* func (`void(*)()`): A function containing the logic of the test. The name of the function is also displayed on the
+  screen.
+
+Executes the given test function and prints an according message on the screen.
+
+
+### nt_assert_equal
+
+Include: [nt/test.h](../include/nt/test.h)
+
+Parameters:
+
+* expected: The expected value.
+* actual: The actual value.
+* comparator (`int(*)(type, type)`): A function that can be used to compare the values. This is only necessary for non
+  primitive types.
+
+Checks if the expected and the actual value are equal. If not, a panic is raised.
+
+
+### nt_assert_unequal
+
+Include: [nt/test.h](../include/nt/test.h)
+
+Parameters:
+
+* expected: The expected value.
+* actual: The actual value.
+* comparator (`int(*)(type, type)`): A function that can be used to compare the values. This is only necessary for non
+  primitive types.
+
+Checks if the expected and the actual value are unequal. If not, a panic is raised.
+
+
+### nt_assert_less
+
+Include: [nt/test.h](../include/nt/test.h)
+
+Parameters:
+
+* expected: The expected value.
+* actual: The actual value.
+
+Checks if the actual value is less than the expected one. If not, a panic is raised.
+
+
+### nt_assert_less_equal
+
+Include: [nt/test.h](../include/nt/test.h)
+
+Parameters:
+
+* expected: The expected value.
+* actual: The actual value.
+
+Checks if the actual value is less than or equal the expected one. If not, a panic is raised.
+
+
+### nt_assert_greater
+
+Include: [nt/test.h](../include/nt/test.h)
+
+Parameters:
+
+* expected: The expected value.
+* actual: The actual value.
+
+Checks if the actual value is greater than the expected one. If not, a panic is raised.
+
+
+### nt_assert_greater_equal
+
+Include: [nt/test.h](../include/nt/test.h)
+
+Parameters:
+
+* expected: The expected value.
+* actual: The actual value.
+
+Checks if the actual value is greater than or equal the expected one. If not, a panic is raised.
+
+
+### nt_assert_true
+
+Include: [nt/test.h](../include/nt/test.h)
+
+Parameters:
+
+* actual: The actual value.
+
+Checks if the actual value evaluates to `true`. If not, a panic is raised.
+
+
+### nt_assert_false
+
+Include: [nt/test.h](../include/nt/test.h)
+
+Parameters:
+
+* actual: The actual value.
+
+Checks if the actual value evaluates to `false`. If not, a panic is raised.
+
+
+## Measurement
+
+### nt_measure
+
+Include: [nt/measurement.h](../include/nt/measurement.h)
+
+Parameters:
+
+* code: Code that should be measured.
+* result_var: A variable of type `int64_t` where the result should be stored.
+
+Measures the elapsed time a piece of code takes to execute in µs.
+
+
+### nt_print_measure
+
+Include: [nt/measurement.h](../include/nt/measurement.h)
+
+Parameters:
+
+* time (`int64_t`): The elapsed time to print in µs.
+
+Pretty prints the passed time to the screen.
