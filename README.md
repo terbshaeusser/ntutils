@@ -10,7 +10,7 @@
 * Collection types
 
   * Linear list (TODO)
-  * Circular buffer (TODO)
+  * Circular buffer
   * Queue (TODO)
   * Hash set (TODO)
   * Hash map (TODO)

@@ -280,3 +280,144 @@ Parameters:
 * time (`int64_t`): The elapsed time to print in µs.
 
 Pretty prints the passed time to the screen.
+
+
+## Circular Buffer
+
+Circular buffers must first be defined by using the `NT_CIRC_BUF` macro. It takes a name and the item type that will be
+stored in the buffer. Once done, the circular buffer type is available with the passed name suffixed with `_t`.
+The "member" functions of the new type are prefixed with the name as well.
+
+Example:
+
+```
+#include "nt/circular.h"
+
+NT_CIRC_BUF(int_buffer, int)
+
+int main() {
+  int_buffer_t buffer = int_buffer_new(4);
+  
+  int_buffer_push(&buffer, 1);
+  
+  int_buffer_free(&buffer);
+  return 0;
+}
+```
+
+### *_new
+
+Include: [nt/circular.h](../include/nt/circular.h)
+
+Parameters:
+
+* capacity (`size_t`): The capacity of the new circular buffer instance.
+
+Return:
+
+* (`name_t`) A new circular buffer instance with the passed capacity.
+
+Creates a new circular buffer instance and returns it.
+
+
+### *_free
+
+Include: [nt/circular.h](../include/nt/circular.h)
+
+Parameters:
+
+* self (`name_t*`): The circular buffer instance to release.
+
+Releases a previously allocated circular buffer.
+
+
+### *_capacity
+
+Include: [nt/circular.h](../include/nt/circular.h)
+
+Parameters:
+
+* self (`name_t*`): The circular buffer instance.
+
+Return:
+
+* (`size_t`) The capacity of the given circular buffer instance.
+
+
+### *_count
+
+Include: [nt/circular.h](../include/nt/circular.h)
+
+Parameters:
+
+* self (`name_t*`): The circular buffer instance.
+
+Return:
+
+* (`size_t`) The number of items currently pushed on the given circular buffer instance.
+
+
+### *_push
+
+Include: [nt/circular.h](../include/nt/circular.h)
+
+Parameters:
+
+* self (`name_t*`): The circular buffer instance.
+* item: The item to push.
+
+Pushes a new item to the end of the given circular buffer instance. The function asserts that the buffer has enough
+space for another item.
+
+
+### *_push_ref
+
+Include: [nt/circular.h](../include/nt/circular.h)
+
+Parameters:
+
+* self (`name_t*`): The circular buffer instance.
+* item: A pointer to the item to push.
+
+Pushes a new item to the end of the given circular buffer instance. The function asserts that the buffer has enough 
+space for another item.
+
+
+### *_pop
+
+Include: [nt/circular.h](../include/nt/circular.h)
+
+Parameters:
+
+* self (`name_t*`): The circular buffer instance.
+* item: A pointer to a place where the popped value should be stored or `NULL`.
+
+Pops the next value from the beginning of a given circular buffer instance. An assert ensures that the buffer is not
+empty.
+
+
+### *_get
+
+Include: [nt/circular.h](../include/nt/circular.h)
+
+Parameters:
+
+* self (`name_t*`): The circular buffer instance.
+* index: The index of the item.
+
+Return:
+
+* A pointer to the item with the given index.
+
+Returns the item with the given index. The index is checked with an assert.
+
+
+### *_clear
+
+Include: [nt/circular.h](../include/nt/circular.h)
+
+Parameters:
+
+* self (`name_t*`): The circular buffer instance.
+
+Removes all items from the given circular buffer.
