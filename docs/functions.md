@@ -421,3 +421,104 @@ Parameters:
 * self (`name_t*`): The circular buffer instance.
 
 Removes all items from the given circular buffer.
+
+
+## Unicode
+
+### nt_cp
+
+Include: [nt/utf8.h](../include/nt/utf8.h)
+
+Parameters:
+
+* code_point (`uint32_t`): A number representing a code point.
+
+Return:
+
+* (`nt_cp_t`) A struct holding the passed number.
+
+Helper function to convert integers to `nt_cp_t`.
+
+
+### nt_cp_is_valid
+
+Include: [nt/utf8.h](../include/nt/utf8.h)
+
+Parameters:
+
+* cp (`nt_cp_t`): A code point to check.
+
+Check whether the passed code point is a valid Unicode code point.
+
+
+## UTF-8
+
+### nt_utf8_len
+
+Include: [nt/utf8.h](../include/nt/utf8.h)
+
+Parameters:
+
+* cp (`nt_cp_t`): A code point.
+
+Return:
+
+* (`int`) The number of bytes UTF-8 needs to encode the given code point.
+
+
+### nt_utf8_read
+
+Include: [nt/utf8.h](../include/nt/utf8.h)
+
+Parameters:
+
+* str (`char const **`): Pointer to a string.
+* len (`size_t *`): Pointer to the length of the string.
+
+Return:
+
+* (`nt_cp_t`) The read code point. If the function fails, an invalid code point is returned.
+
+Reads the next code point from an UTF-8 encoded string and advances `str` / decreases `len` by the number of decoded
+bytes.
+
+
+### nt_utf8_write
+
+Include: [nt/utf8.h](../include/nt/utf8.h)
+
+Parameters:
+
+* str (`char **`): Pointer to a string.
+* len (`size_t *`): Pointer to the length of the string.
+* cp (`nt_cp_t`): A code point.
+
+Writes the passed code point UTF-8 encoded to the beginning to the passed string. `str` is increased / `len` decreased
+by the number of required bytes. If the code point is invalid or `len` is too small to hold the code point, nothing is
+done.
+
+
+### nt_utf8_has_bom
+
+Include: [nt/utf8.h](../include/nt/utf8.h)
+
+Parameters:
+
+* str (`char const *`): A string.
+* len (`size_t`): The length of the string.
+
+Return:
+
+* (`bool`) Returns `true` if the passed string starts with the UTF-8 BOM.
+
+
+### nt_utf8_write_bom
+
+Include: [nt/utf8.h](../include/nt/utf8.h)
+
+Parameters:
+
+* str (`char *`): A string.
+
+Writes the UTF-8 BOM to the passed string. The caller is responsible that at least `NT_UTF8_BOM_LEN` bytes are
+available.
