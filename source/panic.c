@@ -4,14 +4,15 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <threads.h>
 
 typedef struct {
   nt_panic_handler_t handler;
   void *ctx;
 } handler_entry_t;
 
-static handler_entry_t entries[NT_PANIC_MAX_HANDLER_COUNT];
-static int entry_count = 0;
+static thread_local handler_entry_t entries[NT_PANIC_MAX_HANDLER_COUNT];
+static thread_local int entry_count = 0;
 
 void nt_push_panic_handler(nt_panic_handler_t handler, void *ctx) {
   assert(entry_count < NT_PANIC_MAX_HANDLER_COUNT);
