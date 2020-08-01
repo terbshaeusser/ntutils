@@ -167,8 +167,8 @@ Parameters:
 
 * expected: The expected value.
 * actual: The actual value.
-* comparator (`int(*)(type, type)`): A function that can be used to compare the values. This is only necessary for non
-  primitive types.
+* comparator (`nt_comparison_result_t(*)(type, type)`): A function that can be used to compare the values. This is only
+  necessary for non primitive types.
 
 Checks if the expected and the actual value are equal. If not, a panic is raised.
 
@@ -181,8 +181,8 @@ Parameters:
 
 * expected: The expected value.
 * actual: The actual value.
-* comparator (`int(*)(type, type)`): A function that can be used to compare the values. This is only necessary for non
-  primitive types.
+* comparator (`nt_comparison_result_t(*)(type, type)`): A function that can be used to compare the values. This is only
+  necessary for non primitive types.
 
 Checks if the expected and the actual value are unequal. If not, a panic is raised.
 
