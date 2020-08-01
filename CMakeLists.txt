@@ -12,6 +12,7 @@ add_library(ntutils
         include/nt/measurement.h
         include/nt/mem.h
         include/nt/panic.h
+        include/nt/stream.h
         include/nt/test.h
         include/nt/utf8.h
 
@@ -19,6 +20,7 @@ add_library(ntutils
         source/panic.c
         source/measurement.c
         source/mem.c
+        source/stream.c
         source/test.c
         source/utf8.c)
 
