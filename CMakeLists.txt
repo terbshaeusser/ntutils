@@ -12,6 +12,7 @@ add_library(ntutils
         include/nt/measurement.h
         include/nt/mem.h
         include/nt/panic.h
+        include/nt/reader.h
         include/nt/stream.h
         include/nt/test.h
         include/nt/utf8.h
@@ -20,15 +21,14 @@ add_library(ntutils
         source/panic.c
         source/measurement.c
         source/mem.c
+        source/reader.c
         source/stream.c
         source/test.c
         source/utf8.c)
 
 target_include_directories(ntutils PUBLIC include)
 
-target_compile_options(ntutils PRIVATE
-        $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
-        -Wall -Werror>)
+target_compile_options(ntutils PRIVATE -Wall -Wextra -Werror)
 
 add_executable(ntutils_mem_tests
         tests/mem.c)

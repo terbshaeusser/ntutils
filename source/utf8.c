@@ -90,7 +90,7 @@ invalid:
 
 void nt_utf8_write(char **str, size_t *len, nt_cp_t cp) {
   int req_len = nt_utf8_len(cp);
-  if (len[0] < req_len) {
+  if (len[0] < (size_t)req_len) {
     return;
   }
 

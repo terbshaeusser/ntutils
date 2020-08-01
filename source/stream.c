@@ -111,7 +111,7 @@ bool nt_stream_from_file(nt_stream_t *stream, nt_file_mode_t mode,
     return open_file_rw(stream, path);
   default:
     nt_panic("The passed file mode is invalid");
-    break;
+    return false;
   }
 }
 
@@ -140,7 +140,7 @@ static bool str_stream_seek(nt_stream_t *self, int64_t pos, bool from_end) {
 }
 
 static int32_t str_stream_read(nt_stream_t *self, void *block, size_t size) {
-  int32_t result = size;
+  size_t result = size;
   size_t diff = self->P_data.len - self->P_data.pos;
 
   if (result > diff) {

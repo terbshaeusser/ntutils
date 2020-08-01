@@ -456,6 +456,17 @@ Parameters:
 Check whether the passed code point is a valid Unicode code point.
 
 
+### nt_cp_is_newline
+
+Include: [nt/utf8.h](../include/nt/utf8.h)
+
+Parameters:
+
+* cp (`nt_cp_t`): A code point to check.
+
+Check whether the passed code point describes a newline `\n` character.
+
+
 ## UTF-8
 
 ### nt_utf8_len
@@ -560,3 +571,87 @@ Parameters:
 
 Creates a read-only stream from a string. The function pointers inside the stream type can be used for interaction and
 release.
+
+
+## Reader
+
+A reader takes a stream as source and reads it code point by code point. Additionally a line and column counter is
+available as well as lookaheads can be performed. The number of code points that can be looked ahead are specified with
+the `NT_READER_MAX_LOOKAHEAD` macro.
+
+
+### nt_reader_new
+
+Include: [nt/reader.h](../include/nt/reader.h)
+
+Parameters:
+
+* stream (`nt_stream_t*`): A pointer to a stream that should be used as source.
+* decoder (`nt_decoder_t`, optional): A decode function that is used to "convert" the raw data into a code point.
+
+Return:
+
+* (`nt_reader_t`) A new reader instance.
+
+
+### nt_reader_free
+
+Include: [nt/reader.h](../include/nt/reader.h)
+
+Parameters:
+
+* self (`nt_reader_t*`): A pointer to an initialized reader.
+
+Releases the passed reader instance.
+
+
+### nt_reader_is_eof
+
+Include: [nt/reader.h](../include/nt/reader.h)
+
+Parameters:
+
+* self (`nt_reader_t const*`): A pointer to an initialized reader.
+
+Return:
+
+* (`bool`) `true` if there are no more code points to read.
+
+
+### nt_reader_next
+
+Include: [nt/reader.h](../include/nt/reader.h)
+
+Parameters:
+
+* self (`nt_reader_t*`): A pointer to an initialized reader.
+* line (`uint32_t*`, optional): A pointer to an integer where the line number of the next code point should be stored or
+  `NULL`.
+* column (`uint32_t*`, optional): A pointer to an integer where the column number of the next code point should be
+  stored or `NULL`.
+
+Return:
+
+* (`nt_cp_t`) The next code point. If the were no more code points to read, an invalid code point is returned.
+
+Reads the next code point from the reader and advances to the next one.
+
+
+### nt_reader_lh
+
+Include: [nt/reader.h](../include/nt/reader.h)
+
+Parameters:
+
+* self (`nt_reader_t*`): A pointer to an initialized reader.
+* n (`int32_t`, optional): The number of code points to look ahead lying between 1 and `NT_READER_MAX_LOOKAHEAD`.
+* line (`uint32_t*`, optional): A pointer to an integer where the line number of the code point should be stored or
+  `NULL`.
+* column (`uint32_t*`, optional): A pointer to an integer where the column number of the code point should be stored or
+  `NULL`.
+
+Return:
+
+* (`nt_cp_t`) The looked ahead code point. If the were no more code points to read, an invalid code point is returned.
+
+Looks `n` code points ahead and returns that one without advancing.

@@ -27,6 +27,8 @@ int64_t P_nt_time_in_us(int64_t *freq, int64_t const *prev) {
 #include <sys/time.h>
 
 int64_t P_nt_time_in_us(int64_t *freq, int64_t const *prev) {
+  (void)freq;
+
   struct timeval tv;
   struct timezone tz;
 

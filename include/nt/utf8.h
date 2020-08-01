@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+_Static_assert(sizeof(char) == 1, "The size of the char type must be 1 byte");
+
 enum { NT_UTF8_BOM_LEN = 3 };
 
 typedef struct {
@@ -15,6 +17,10 @@ typedef struct {
 
 static inline bool nt_cp_is_valid(nt_cp_t cp) {
   return cp.code_point <= 0x10FFFF;
+}
+
+static inline bool nt_cp_is_newline(nt_cp_t cp) {
+  return cp.code_point == '\n';
 }
 
 int nt_utf8_len(nt_cp_t cp);
