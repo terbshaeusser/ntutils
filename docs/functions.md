@@ -408,7 +408,7 @@ Include: [nt/circular.h](../include/nt/circular.h)
 Parameters:
 
 * self (`name_t*`): The circular buffer instance.
-* index: The index of the item.
+* index (`size_t`): The index of the item.
 
 Return:
 
@@ -527,3 +527,36 @@ Parameters:
 
 Writes the UTF-8 BOM to the passed string. The caller is responsible that at least `NT_UTF8_BOM_LEN` bytes are
 available.
+
+
+## Streams
+
+### nt_stream_from_file
+
+Include: [nt/stream.h](../include/nt/stream.h)
+
+Parameters:
+
+* stream (`nt_stream_t*`): A pointer to an unused stream instance.
+* mode (`nt_file_mode_t`): The mode in which the file should be opened.
+* path (`char const*`): The path of the file to open.
+
+Return:
+
+* (`bool`) `true` if the stream was successfully opened.
+
+Creates a stream to access a file. The function pointers inside the stream type can be used for interaction and release.
+
+
+## nt_stream_from_str
+
+Include: [nt/stream.h](../include/nt/stream.h)
+
+Parameters:
+
+* stream (`nt_stream_t*`): A pointer to an unused stream instance.
+* str (`char const*`): The string that will be used as source for the stream.
+* len (`size_t`, optional): The length of the string. If none is given, the length will be computed with `strlen`.
+
+Creates a read-only stream from a string. The function pointers inside the stream type can be used for interaction and
+release.
