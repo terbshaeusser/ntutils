@@ -284,23 +284,27 @@ Pretty prints the passed time to the screen.
 
 ## Circular Buffer
 
-Circular buffers must first be defined by using the `NT_CIRC_BUF` macro. It takes a name and the item type that will be
-stored in the buffer. Once done, the circular buffer type is available with the passed name suffixed with `_t`.
-The "member" functions of the new type are prefixed with the name as well.
+Circular buffer types are defined with the `NT_CIRC_BUF(name, item_type, capacity)` macro. This macro defines the
+necessary type with the name `name_t` and additional utility functions to interact with instances of this type.
+The functions are also prefixed with the passed name. In case the capacity is not known at compile time, the third
+parameter can be omitted. The capacity must then be passed to the `name_new` function.
 
 Example:
 
 ```
 #include "nt/circular.h"
 
-NT_CIRC_BUF(int_buffer, int)
+NT_CIRC_BUF(static_int_buffer, int, 4)
+NT_CIRC_BUF(dyn_int_buffer, int)
 
 int main() {
-  int_buffer_t buffer = int_buffer_new(4);
-  
-  int_buffer_push(&buffer, 1);
-  
-  int_buffer_free(&buffer);
+  static_int_buffer_t static_buffer = static_int_buffer_new();
+  static_int_buffer_push(&static_buffer, 1);
+  static_int_buffer_free(&static_buffer);
+
+  dyn_int_buffer_t dyn_buffer = dyn_int_buffer_new(4);
+  dyn_int_buffer_push(&dyn_buffer, 1);
+  dyn_int_buffer_free(&dyn_buffer);
   return 0;
 }
 ```
@@ -311,7 +315,8 @@ Include: [nt/circular.h](../include/nt/circular.h)
 
 Parameters:
 
-* capacity (`size_t`): The capacity of the new circular buffer instance.
+* capacity (`size_t`): The capacity of the new circular buffer instance. This parameter must only be passed if the
+  capacity was omitted when defining the buffer type.
 
 Return:
 
