@@ -40,7 +40,7 @@ void const *P_nt_circ_buf_dyn_get(void const *self, size_t index,
 
   nt_assert(
       index < self2->P_count,
-      "Index %zu is out of range of a circular buffer containing %zu items",
+      "Index %zu is out of range for a circular buffer containing %zu items",
       index, self2->P_count);
 
   return get_item_ptr((void_buff_t *)self2, index, item_size);
@@ -86,7 +86,7 @@ void const *P_nt_circ_buf_fx_get(void const *self, size_t capacity,
 
   nt_assert(
       index < self2->P_count,
-      "Index %zu is out of range of a circular buffer containing %zu items",
+      "Index %zu is out of range for a circular buffer containing %zu items",
       index, self2->P_count);
 
   return get_item_ptr_fx((void_buff_fx_t *)self2, capacity, index, item_size);
