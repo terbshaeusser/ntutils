@@ -17,4 +17,16 @@
 #define NT_READER_INTERN_BUFFER_SIZE 8
 #endif
 
+#ifndef NT_JSON_MAX_KEY_LEN
+#define NT_JSON_MAX_KEY_LEN 64
+#endif
+
+#ifndef NT_JSON_MAX_STR_LITERAL_LEN
+#define NT_JSON_MAX_STR_LITERAL_LEN 1024
+#endif
+
+#ifndef NT_JSON_MAX_DEPTH
+#define NT_JSON_MAX_DEPTH 64
+#endif
+
 #endif // NTUTILS_CONFIG_H

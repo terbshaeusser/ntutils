@@ -8,6 +8,7 @@ add_library(ntutils
         include/nt/circular.h
         include/nt/compare.h
         include/nt/config.h
+        include/nt/json.h
         include/nt/macros.h
         include/nt/measurement.h
         include/nt/mem.h
@@ -18,6 +19,7 @@ add_library(ntutils
         include/nt/utf8.h
 
         source/circular.c
+        source/json.c
         source/panic.c
         source/measurement.c
         source/mem.c
