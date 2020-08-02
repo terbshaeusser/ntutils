@@ -37,7 +37,7 @@ void nt_reader_free(nt_reader_t *self);
 bool nt_reader_is_eof(nt_reader_t const *self);
 
 #define nt_reader_next(self, ...)                                              \
-  P_nt_reader_next(reader, NT_GET_ARG0_OR_DEFAULT(NULL, __VA_ARGS__),          \
+  P_nt_reader_next(self, NT_GET_ARG0_OR_DEFAULT(NULL, __VA_ARGS__),            \
                    NT_GET_ARG1_OR_DEFAULT(NULL, __VA_ARGS__))
 
 nt_cp_t P_nt_reader_next(nt_reader_t *self, uint32_t *line, uint32_t *column);
