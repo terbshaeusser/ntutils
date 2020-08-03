@@ -9,6 +9,7 @@ add_library(ntutils
         include/nt/compare.h
         include/nt/config.h
         include/nt/json.h
+        include/nt/list.h
         include/nt/macros.h
         include/nt/measurement.h
         include/nt/mem.h
@@ -20,9 +21,10 @@ add_library(ntutils
 
         source/circular.c
         source/json.c
-        source/panic.c
+        source/list.c
         source/measurement.c
         source/mem.c
+        source/panic.c
         source/reader.c
         source/stream.c
         source/test.c
@@ -42,6 +44,7 @@ endfunction()
 
 create_test(ntutils_circular_tests tests/circular.c)
 create_test(ntutils_json_tests tests/json.c)
+create_test(ntutils_list_tests tests/list.c)
 create_test(ntutils_mem_tests tests/mem.c)
 create_test(ntutils_reader_tests tests/reader.c)
 create_test(ntutils_utf8_tests tests/utf8.c)
