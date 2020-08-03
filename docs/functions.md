@@ -10,6 +10,7 @@ Parameters:
 
 * condition: A condition that is checked to be `!= 0`.
 * message (`char const*`, optional): An optional message that is displayed on the screen.
+* args (optional): Var args holding arguments for formatting `message`.
 
 Ensures that a given condition is met. Otherwise a panic is raised with the source location, the condition and an
 optional custom message.
@@ -257,6 +258,28 @@ Parameters:
 Checks if the actual value evaluates to `false`. If not, a panic is raised.
 
 
+### nt_assert_null
+
+Include: [nt/test.h](../include/nt/test.h)
+
+Parameters:
+
+* actual: The actual value.
+
+Checks if the actual value evaluates to `NULL`. If not, a panic is raised.
+
+
+### nt_assert_not_null
+
+Include: [nt/test.h](../include/nt/test.h)
+
+Parameters:
+
+* actual: The actual value.
+
+Checks if the actual value evaluates to a value unequal to `NULL`. If not, a panic is raised.
+
+
 ## Measurement
 
 ### nt_measure
@@ -467,6 +490,17 @@ Parameters:
 Check whether the passed code point describes a newline `\n` character.
 
 
+### nt_cp_is_whitespace
+
+Include: [nt/utf8.h](../include/nt/utf8.h)
+
+Parameters:
+
+* cp (`nt_cp_t`): A code point to check.
+
+Check whether the passed code point describes a whitespace character.
+
+
 ## UTF-8
 
 ### nt_utf8_len
@@ -655,3 +689,25 @@ Return:
 * (`nt_cp_t`) The looked ahead code point. If the were no more code points to read, an invalid code point is returned.
 
 Looks `n` code points ahead and returns that one without advancing.
+
+
+## JSON
+
+### nt_json_parse
+
+Include: [nt/json.h](../include/nt/json.h)
+
+Parameters:
+
+* reader (`nt_reader_t*`): A pointer to an initialized reader.
+* ctx (`void*`): Pointer to a context that is passed to the evaluation function or `NULL`.
+* eval (`nt_json_eval_t`): An evaluation function that is executed for each parsed value.
+* error_handler (`nt_json_error_handler_t`): An error handler function that is executed when an error was encountered
+  during parsing.
+
+Return:
+
+* (`bool`) `true` if no error occurred during parsing.
+
+Parses the data in a passed reader as JSON formatted data. Each parsed value triggers the `eval` function which can read
+the key and value, specify another context or eval function for child values and abort the parsing if necessary.
