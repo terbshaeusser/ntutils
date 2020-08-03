@@ -240,3 +240,17 @@ void P_nt_assert_false(bool actual, char const *actual_str,
     nt_panic("Assertion failed at %s\n\n%s == false\n\n", location, actual_str);
   }
 }
+
+void P_nt_assert_null(void const *actual, char const *actual_str,
+                      char const *location) {
+  if (actual) {
+    nt_panic("Assertion failed at %s\n\n%s == NULL\n\n", location, actual_str);
+  }
+}
+
+void P_nt_assert_not_null(void const *actual, char const *actual_str,
+                          char const *location) {
+  if (!actual) {
+    nt_panic("Assertion failed at %s\n\n%s != NULL\n\n", location, actual_str);
+  }
+}
