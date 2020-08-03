@@ -30,6 +30,7 @@ static nt_cp_t next_without_lh(nt_reader_t *self, uint32_t *line,
       nt_panic("An error occurred on reading from a reader input stream");
     }
 
+    self->P_next = 0;
     self->P_filled = len + n;
     len = self->P_filled;
   }
@@ -84,7 +85,7 @@ nt_cp_t P_nt_reader_lh(nt_reader_t *self, int32_t n, uint32_t *line,
             "lookahead of %d",
             NT_READER_MAX_LOOKAHEAD);
 
-  while ((size_t)n < P_nt_reader_lh_buff_count(&self->P_lookaheads)) {
+  while ((size_t)n > P_nt_reader_lh_buff_count(&self->P_lookaheads)) {
     uint32_t lh_line;
     uint32_t lh_column;
     nt_cp_t cp = next_without_lh(self, &lh_line, &lh_column);

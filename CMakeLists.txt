@@ -32,23 +32,16 @@ target_include_directories(ntutils PUBLIC include)
 
 target_compile_options(ntutils PRIVATE -Wall -Wextra -Werror)
 
-add_executable(ntutils_mem_tests
-        tests/mem.c)
+function(create_test name sources)
+    add_executable(${name} ${sources})
 
-add_test(NAME ntutils_mem_tests COMMAND ntutils_str_tests)
+    add_test(NAME ${name} COMMAND ${name})
 
-target_link_libraries(ntutils_mem_tests ntutils)
+    target_link_libraries(${name} ntutils)
+endfunction()
 
-add_executable(ntutils_circular_tests
-        tests/circular.c)
-
-add_test(NAME ntutils_circular_tests COMMAND ntutils_str_tests)
-
-target_link_libraries(ntutils_circular_tests ntutils)
-
-add_executable(ntutils_utf8_tests
-        tests/utf8.c)
-
-add_test(NAME ntutils_utf8_tests COMMAND ntutils_str_tests)
-
-target_link_libraries(ntutils_utf8_tests ntutils)
+create_test(ntutils_circular_tests tests/circular.c)
+create_test(ntutils_json_tests tests/json.c)
+create_test(ntutils_mem_tests tests/mem.c)
+create_test(ntutils_reader_tests tests/reader.c)
+create_test(ntutils_utf8_tests tests/utf8.c)
