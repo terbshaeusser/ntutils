@@ -212,4 +212,15 @@ void P_nt_assert_true(bool actual, char const *actual_str,
 void P_nt_assert_false(bool actual, char const *actual_str,
                        char const *location);
 
+#define nt_assert_null(actual) P_nt_assert_null(actual, #actual, NT_LOCATION)
+
+void P_nt_assert_null(void const *actual, char const *actual_str,
+                      char const *location);
+
+#define nt_assert_not_null(actual)                                             \
+  P_nt_assert_not_null(actual, #actual, NT_LOCATION)
+
+void P_nt_assert_not_null(void const *actual, char const *actual_str,
+                          char const *location);
+
 #endif // NTUTILS_TEST_H
