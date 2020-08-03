@@ -365,7 +365,7 @@ Include: [nt/circular.h](../include/nt/circular.h)
 
 Parameters:
 
-* self (`name_t*`): The circular buffer instance.
+* self (`name_t const*`): The circular buffer instance.
 
 Return:
 
@@ -378,7 +378,7 @@ Include: [nt/circular.h](../include/nt/circular.h)
 
 Parameters:
 
-* self (`name_t*`): The circular buffer instance.
+* self (`name_t const*`): The circular buffer instance.
 
 Return:
 
@@ -392,7 +392,7 @@ Include: [nt/circular.h](../include/nt/circular.h)
 Parameters:
 
 * self (`name_t*`): The circular buffer instance.
-* item: The item to push.
+* item (`item_type`): The item to push.
 
 Pushes a new item to the end of the given circular buffer instance. The function asserts that the buffer has enough
 space for another item.
@@ -405,7 +405,7 @@ Include: [nt/circular.h](../include/nt/circular.h)
 Parameters:
 
 * self (`name_t*`): The circular buffer instance.
-* item: A pointer to the item to push.
+* item (`item_type const*`): A pointer to the item to push.
 
 Pushes a new item to the end of the given circular buffer instance. The function asserts that the buffer has enough 
 space for another item.
@@ -418,26 +418,10 @@ Include: [nt/circular.h](../include/nt/circular.h)
 Parameters:
 
 * self (`name_t*`): The circular buffer instance.
-* item: A pointer to a place where the popped value should be stored or `NULL`.
+* item (`item_type*`): A pointer to a place where the popped value should be stored or `NULL`.
 
 Pops the next value from the beginning of a given circular buffer instance. An assert ensures that the buffer is not
 empty.
-
-
-### *_get
-
-Include: [nt/circular.h](../include/nt/circular.h)
-
-Parameters:
-
-* self (`name_t*`): The circular buffer instance.
-* index (`size_t`): The index of the item.
-
-Return:
-
-* A pointer to the item with the given index.
-
-Returns the item with the given index. The index is checked with an assert.
 
 
 ### *_clear
@@ -449,6 +433,214 @@ Parameters:
 * self (`name_t*`): The circular buffer instance.
 
 Removes all items from the given circular buffer.
+
+
+### *_get
+
+Include: [nt/circular.h](../include/nt/circular.h)
+
+Parameters:
+
+* self (`name_t const*`): The circular buffer instance.
+* index (`size_t`): The index of the item.
+
+Return:
+
+* (`item_type const*`) A pointer to the item with the given index.
+
+Returns the item with the given index. The index is checked with an assert.
+
+
+## List
+
+List types are defined with the `NT_LIST(name, item_type)` macro. This macro defines the necessary type with the name
+`name_t` and additional utility functions to interact with instances of this type. The functions are also prefixed with
+the passed name.
+
+**Hint:** The list implementation uses a continuous block of memory in the background.
+
+Example:
+
+```
+#include "nt/list.h"
+
+NT_LIST(int_list, int)
+
+int main() {
+  int_list_t list = int_list_new();
+  int_list_add(&list, 2);
+  int_list_insert(&list, 0, 1);
+  int_list_free(&list);
+  return 0;
+}
+```
+
+### *_new
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Return:
+
+* (`name_t`) A new list instance with 0 items.
+
+Creates a new list instance and returns it.
+
+
+### *_free
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Parameters:
+
+* self (`name_t*`): The list instance to release.
+
+Releases a previously allocated list.
+
+
+### *_capacity
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Parameters:
+
+* self (`name_t const*`): The list instance.
+
+Return:
+
+* (`size_t`) The capacity of the given list instance.
+
+
+### *_count
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Parameters:
+
+* self (`name_t const*`): The list instance.
+
+Return:
+
+* (`size_t`) The number of items currently stored in the list instance.
+
+
+### *_reserve
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Parameters:
+
+* self (`name_t*`): The list instance.
+* amount (`size_t`): The number of items the function should reserve space for.
+
+Reserves space for the given number of items. If the space is already available, the list remains unchanged.
+
+
+### *_shrink
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Parameters:
+
+* self (`name_t*`): The list instance.
+
+Reduces the memory used by the list to the exact number of stored items.
+
+
+### *_add
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Parameters:
+
+* self (`name_t*`): The list instance.
+* item (`item_type`): The item to add.
+
+Return:
+
+* (`size_t`) The index inside the list where the item was inserted.
+
+Adds an item to the end of the list.
+
+
+### *_add_ref
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Parameters:
+
+* self (`name_t*`): The list instance.
+* item (`item_type const*`): A pointer to the item to add.
+
+Return:
+
+* (`size_t`) The index inside the list where the item was inserted.
+
+Adds an item to the end of the list.
+
+
+### *_insert
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Parameters:
+
+* self (`name_t*`): The list instance.
+* index (`size_t`): The index the new item should have.
+* item (`item_type`): The item to add.
+
+Inserts an item into the list at the given index. The index is checked with an assert.
+
+
+### *_insert_ref
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Parameters:
+
+* self (`name_t*`): The list instance.
+* index (`size_t`): The index the new item should have.
+* item (`item_type const*`): A pointer to the item to add.
+
+Inserts an item into the list at the given index. The index is checked with an assert.
+
+
+### *_remove
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Parameters:
+
+* self (`name_t*`): The list instance.
+* index (`size_t`): The index of the item to remove.
+
+Removes the item with the passed index. The index is checked with an assert.
+
+
+### *_clear
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Parameters:
+
+* self (`name_t*`): The list instance.
+
+Removes all items from the given list.
+
+
+### *_get
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Parameters:
+
+* self (`name_t const*`): The list instance.
+* index (`size_t`): The index of the item.
+
+Return:
+
+* (`item_type const*`) A pointer to the item with the given index.
+
+Returns the item with the given index. The index is checked with an assert.
 
 
 ## Unicode

@@ -6,16 +6,16 @@
 * Advanced assert functions
 * Test utility functions
 * String type with short string optimization (TODO)
-* UTF-8 support (TODO)
+* UTF-8 support
 * Collection types
 
-  * Linear list (TODO)
+  * Linear list
   * Circular buffer
   * Queue (TODO)
   * Hash set (TODO)
   * Hash map (TODO)
 
-* JSON parser (TODO)
+* JSON parser
 * File system utility functions (TODO)
 
 
