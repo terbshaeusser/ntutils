@@ -46,9 +46,13 @@ static bool read_num_value(parse_ctx_t *parse_ctx, nt_json_key_t const *key) {
 
   while (old_len != len) {
     nt_cp_t cp = nt_reader_lh(parse_ctx->reader);
-    if (is_separator(cp) && cp.code_point != '.' && cp.code_point != '+' &&
-        cp.code_point != '-') {
-      break;
+    if (is_separator(cp)) {
+      if (cp.code_point == '.' || cp.code_point == '+' ||
+          cp.code_point == '-') {
+        is_float = true;
+      } else {
+        break;
+      }
     }
 
     old_len = len;
@@ -171,6 +175,7 @@ static bool read_str(parse_ctx_t *parse_ctx, char *str, size_t *str_len,
     }
   }
 
+  *str_len -= len;
   return true;
 }
 
@@ -214,13 +219,14 @@ static bool read_object_value(parse_ctx_t *parse_ctx,
         parse_ctx->reader,    child_eval.ctx,           child_eval.eval,
         parse_ctx->error_ctx, parse_ctx->error_handler, parse_ctx->depth + 1};
 
-    char key_name[NT_JSON_MAX_KEY_LEN + 1] = {0};
+    char key_name[NT_JSON_MAX_KEY_LEN + 1];
 
     while (true) {
       size_t key_len = NT_JSON_MAX_KEY_LEN;
       if (!read_str(&child_parse_ctx, key_name, &key_len, &line, &column)) {
         return false;
       }
+      key_name[key_len] = 0;
 
       if (lh_non_ws(parse_ctx, NULL, NULL).code_point != ':') {
         report_error(parse_ctx, line, column, "Expected :");
@@ -245,6 +251,7 @@ static bool read_object_value(parse_ctx_t *parse_ctx,
       }
 
       nt_reader_next(parse_ctx->reader);
+      lh_non_ws(parse_ctx, NULL, NULL);
     }
   }
 
@@ -292,6 +299,7 @@ static bool read_array_value(parse_ctx_t *parse_ctx, nt_json_key_t const *key) {
       }
 
       nt_reader_next(parse_ctx->reader);
+      lh_non_ws(parse_ctx, NULL, NULL);
     }
   }
 
@@ -400,16 +408,3 @@ bool nt_json_parse(nt_reader_t *reader, void *ctx, nt_json_eval_t eval,
 
   return true;
 }
-
-/* Logic:
- * nt_json_eval_t is executed for every value.
- * If the value has no key (top level) the passed key is set to NULL.
- *
- * When reaching an array or object the following logic applies:
- * - nt_json_eval_t is called with value type == NT_TYPE_ARRAY
- * - Children are parsed using child_eval. If child_eval == NULL the array will
- * be ignored
- * - nt_json_eval_t is called again with the value type == NT_TYPE_ARRAY and
- * closed set to true
- *
- * */
