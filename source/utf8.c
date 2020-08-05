@@ -121,10 +121,10 @@ void nt_utf8_write(char **str, size_t *len, nt_cp_t cp) {
   len[0] -= req_len;
 }
 
-static const uint8_t UTF8_BOM[NT_UTF8_BOM_LEN] = {0xEFu, 0xBBu, 0xBFu};
+static const uint8_t utf8_bom[NT_UTF8_BOM_LEN] = {0xEFu, 0xBBu, 0xBFu};
 
 bool nt_utf8_has_bom(char const *str, size_t len) {
-  return len >= NT_UTF8_BOM_LEN && memcmp(UTF8_BOM, str, NT_UTF8_BOM_LEN) == 0;
+  return len >= NT_UTF8_BOM_LEN && memcmp(utf8_bom, str, NT_UTF8_BOM_LEN) == 0;
 }
 
-void nt_utf8_write_bom(char *str) { memcpy(str, UTF8_BOM, NT_UTF8_BOM_LEN); }
+void nt_utf8_write_bom(char *str) { memcpy(str, utf8_bom, NT_UTF8_BOM_LEN); }

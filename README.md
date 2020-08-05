@@ -13,7 +13,8 @@
   * Circular buffer
   * Queue (TODO)
   * Hash set
-  * Hash map (TODO)
+  * Hash map
+  * Multi value hash map (TODO)
 
 * JSON parser
 * File system utility functions (TODO)
