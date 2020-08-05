@@ -8,6 +8,8 @@ add_library(ntutils
         include/nt/circular.h
         include/nt/compare.h
         include/nt/config.h
+        include/nt/hash.h
+        include/nt/hash_container.h
         include/nt/json.h
         include/nt/list.h
         include/nt/macros.h
@@ -15,11 +17,14 @@ add_library(ntutils
         include/nt/mem.h
         include/nt/panic.h
         include/nt/reader.h
+        include/nt/set.h
         include/nt/stream.h
         include/nt/test.h
         include/nt/utf8.h
 
         source/circular.c
+        source/hash.c
+        source/hash_container.c
         source/json.c
         source/list.c
         source/measurement.c
@@ -47,4 +52,5 @@ create_test(ntutils_json_tests tests/json.c)
 create_test(ntutils_list_tests tests/list.c)
 create_test(ntutils_mem_tests tests/mem.c)
 create_test(ntutils_reader_tests tests/reader.c)
+create_test(ntutils_set_tests tests/set.c)
 create_test(ntutils_utf8_tests tests/utf8.c)

@@ -12,7 +12,7 @@
   * Linear list
   * Circular buffer
   * Queue (TODO)
-  * Hash set (TODO)
+  * Hash set
   * Hash map (TODO)
 
 * JSON parser
