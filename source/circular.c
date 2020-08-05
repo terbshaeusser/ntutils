@@ -1,8 +1,9 @@
 #include "nt/circular.h"
 #include "nt/assert.h"
+#include <stdint.h>
 #include <string.h>
 
-NT_CIRC_BUF(void_buff, char)
+NT_CIRC_BUF(void_buff, uint8_t)
 
 static void *get_item_ptr(void_buff_t *self, size_t index) {
   return self->P_items +
@@ -46,7 +47,7 @@ void const *P_nt_circ_buf_dyn_get(void const *self, size_t index) {
   return get_item_ptr((void_buff_t *)self2, index);
 }
 
-NT_CIRC_BUF(void_buff_fx, char, 1)
+NT_CIRC_BUF(void_buff_fx, uint8_t, 1)
 
 static void *get_item_ptr_fx(void_buff_fx_t *self, size_t capacity,
                              size_t index) {
