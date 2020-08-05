@@ -1,8 +1,9 @@
 #include "nt/list.h"
 #include "nt/assert.h"
+#include <stdint.h>
 #include <string.h>
 
-NT_LIST(void_list, char)
+NT_LIST(void_list, uint8_t)
 
 _Static_assert(
     sizeof(size_t) == 4 || sizeof(size_t) == 8,
@@ -32,7 +33,7 @@ void P_nt_list_reserve(void *self, size_t amount) {
   size_t new_capacity_bytes = new_capacity * self2->P_item_size;
 
   if (self2->P_capacity == 0) {
-    self2->P_items = nt_alloc(char, new_capacity_bytes);
+    self2->P_items = nt_alloc(uint8_t, new_capacity_bytes);
   } else {
     self2->P_items = nt_realloc(self2->P_items, new_capacity_bytes);
   }
