@@ -13,6 +13,7 @@ add_library(ntutils
         include/nt/json.h
         include/nt/list.h
         include/nt/macros.h
+        include/nt/map.h
         include/nt/measurement.h
         include/nt/mem.h
         include/nt/panic.h
@@ -27,6 +28,7 @@ add_library(ntutils
         source/hash_container.c
         source/json.c
         source/list.c
+        source/map.c
         source/measurement.c
         source/mem.c
         source/panic.c
@@ -47,9 +49,11 @@ function(create_test name sources)
     target_link_libraries(${name} ntutils)
 endfunction()
 
+enable_testing()
 create_test(ntutils_circular_tests tests/circular.c)
 create_test(ntutils_json_tests tests/json.c)
 create_test(ntutils_list_tests tests/list.c)
+create_test(ntutils_map_tests tests/map.c)
 create_test(ntutils_mem_tests tests/mem.c)
 create_test(ntutils_reader_tests tests/reader.c)
 create_test(ntutils_set_tests tests/set.c)

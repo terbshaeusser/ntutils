@@ -70,6 +70,7 @@ void P_nt_assert_equal_any(void const *expected, void const *actual,
            : P_nt_assert_unequal_float, double                                 \
            : P_nt_assert_unequal_float, char*                                  \
            : P_nt_assert_unequal_str, char const*                              \
+           : P_nt_assert_unequal_str, default                                  \
            : P_nt_assert_unequal_any)(expected, actual, #expected, #actual,    \
                                       NT_LOCATION __VA_OPT__(, (void*)         \
                                         NT_GET_ARG0(__VA_ARGS__)))

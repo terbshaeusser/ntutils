@@ -52,6 +52,7 @@ static P_nt_hash_container_entry_hdr_t *
 get_entry_and_bucket(P_nt_hash_container_t *self, void const *key,
                      uint32_t *hash, uint32_t **bucket) {
   if (self->P_entry_capacity == 0) {
+    *bucket = NULL;
     return NULL;
   }
 
