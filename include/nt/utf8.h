@@ -2,8 +2,8 @@
 #define NTUTILS_UTF8_H
 
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
-#include <stdlib.h>
 
 _Static_assert(sizeof(char) == 1, "The size of the char type must be 1 byte");
 

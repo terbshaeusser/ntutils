@@ -1,4 +1,5 @@
 #include "nt/json.h"
+#include <stdlib.h>
 #include <threads.h>
 
 typedef struct {

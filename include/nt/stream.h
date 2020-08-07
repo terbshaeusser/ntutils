@@ -3,9 +3,9 @@
 
 #include "nt/macros.h"
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 struct P_nt_stream_t;

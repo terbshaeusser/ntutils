@@ -19,6 +19,7 @@ add_library(ntutils
         include/nt/panic.h
         include/nt/reader.h
         include/nt/set.h
+        include/nt/str.h
         include/nt/stream.h
         include/nt/test.h
         include/nt/utf8.h
@@ -33,6 +34,7 @@ add_library(ntutils
         source/mem.c
         source/panic.c
         source/reader.c
+        source/str.c
         source/stream.c
         source/test.c
         source/utf8.c)
@@ -57,4 +59,5 @@ create_test(ntutils_map_tests tests/map.c)
 create_test(ntutils_mem_tests tests/mem.c)
 create_test(ntutils_reader_tests tests/reader.c)
 create_test(ntutils_set_tests tests/set.c)
+create_test(ntutils_str_tests tests/str.c)
 create_test(ntutils_utf8_tests tests/utf8.c)

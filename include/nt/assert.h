@@ -3,7 +3,6 @@
 
 #include "nt/macros.h"
 #include "nt/panic.h"
-#include <stdlib.h>
 
 #define nt_assert(condition, ...)                                              \
   P_nt_assert(condition, NT_GET_ARG0_OR_DEFAULT("", __VA_ARGS__),              \

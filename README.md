@@ -5,7 +5,7 @@
 * Memory utility functions to reduce writing effort
 * Advanced assert functions
 * Test utility functions
-* String type with short string optimization (TODO)
+* String type with short string optimization
 * UTF-8 support
 * Collection types
 

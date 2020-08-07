@@ -2,7 +2,7 @@
 #define NTUTILS_CIRCULAR_H
 
 #include "nt/mem.h"
-#include <stdlib.h>
+#include <stddef.h>
 
 #define NT_CIRC_BUF(...)                                                       \
   NT_GET_ARG3(__VA_ARGS__, P_NT_CIRC_BUF_FX, P_NT_CIRC_BUF_DYN)(__VA_ARGS__)

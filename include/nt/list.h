@@ -2,7 +2,7 @@
 #define NTUTILS_LIST_H
 
 #include "nt/mem.h"
-#include <stdlib.h>
+#include <stddef.h>
 
 #define NT_LIST(name, item_type)                                               \
   typedef struct {                                                             \
