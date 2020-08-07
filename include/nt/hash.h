@@ -1,8 +1,8 @@
 #ifndef NTUTILS_HASH_H
 #define NTUTILS_HASH_H
 
+#include <stddef.h>
 #include <stdint.h>
-#include <stdlib.h>
 
 typedef uint32_t (*nt_hasher_t)(void const *value, size_t len);
 
