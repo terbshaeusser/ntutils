@@ -56,12 +56,12 @@ static bool open_file_ro(nt_stream_t *stream, char const *path) {
   }
 
   stream->P_data.file = file;
-  stream->free = file_stream_free;
-  stream->is_eof = file_stream_is_eof;
-  stream->tell = file_stream_tell;
-  stream->seek = file_stream_seek;
-  stream->read = file_stream_read;
-  stream->write = stream_deny_write;
+  stream->P_free = file_stream_free;
+  stream->P_is_eof = file_stream_is_eof;
+  stream->P_tell = file_stream_tell;
+  stream->P_seek = file_stream_seek;
+  stream->P_read = file_stream_read;
+  stream->P_write = stream_deny_write;
   return true;
 }
 
@@ -72,12 +72,12 @@ static bool open_file_wo(nt_stream_t *stream, char const *path) {
   }
 
   stream->P_data.file = file;
-  stream->free = file_stream_free;
-  stream->is_eof = file_stream_is_eof;
-  stream->tell = file_stream_tell;
-  stream->seek = file_stream_seek;
-  stream->read = stream_deny_read;
-  stream->write = file_stream_write;
+  stream->P_free = file_stream_free;
+  stream->P_is_eof = file_stream_is_eof;
+  stream->P_tell = file_stream_tell;
+  stream->P_seek = file_stream_seek;
+  stream->P_read = stream_deny_read;
+  stream->P_write = file_stream_write;
   return true;
 }
 
@@ -91,12 +91,12 @@ static bool open_file_rw(nt_stream_t *stream, char const *path) {
   }
 
   stream->P_data.file = file;
-  stream->free = file_stream_free;
-  stream->is_eof = file_stream_is_eof;
-  stream->tell = file_stream_tell;
-  stream->seek = file_stream_seek;
-  stream->read = file_stream_read;
-  stream->write = file_stream_write;
+  stream->P_free = file_stream_free;
+  stream->P_is_eof = file_stream_is_eof;
+  stream->P_tell = file_stream_tell;
+  stream->P_seek = file_stream_seek;
+  stream->P_read = file_stream_read;
+  stream->P_write = file_stream_write;
   return true;
 }
 
@@ -160,10 +160,10 @@ void P_nt_stream_from_str(nt_stream_t *stream, char const *str, size_t len) {
   stream->P_data.len = len;
   stream->P_data.pos = 0;
 
-  stream->free = str_stream_free;
-  stream->is_eof = str_stream_is_eof;
-  stream->tell = str_stream_tell;
-  stream->seek = str_stream_seek;
-  stream->read = str_stream_read;
-  stream->write = stream_deny_write;
+  stream->P_free = str_stream_free;
+  stream->P_is_eof = str_stream_is_eof;
+  stream->P_tell = str_stream_tell;
+  stream->P_seek = str_stream_seek;
+  stream->P_read = str_stream_read;
+  stream->P_write = stream_deny_write;
 }

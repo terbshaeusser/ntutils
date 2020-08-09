@@ -11,8 +11,7 @@ void nt_reader_free(nt_reader_t *self) {
 }
 
 bool nt_reader_is_eof(nt_reader_t const *self) {
-  return self->P_next == self->P_filled &&
-         self->P_stream->is_eof(self->P_stream);
+  return self->P_next == self->P_filled && nt_stream_is_eof(self->P_stream);
 }
 
 static nt_cp_t next_without_lh(nt_reader_t *self, uint32_t *line,
@@ -24,8 +23,8 @@ static nt_cp_t next_without_lh(nt_reader_t *self, uint32_t *line,
       memmove(self->P_buffer, &self->P_buffer[self->P_next], len);
     }
 
-    int32_t n = self->P_stream->read(self->P_stream, &self->P_buffer[len],
-                                     NT_READER_INTERN_BUFFER_SIZE - len);
+    int32_t n = nt_stream_read(self->P_stream, &self->P_buffer[len],
+                               NT_READER_INTERN_BUFFER_SIZE - len);
     if (n < 0) {
       nt_panic("An error occurred on reading from a reader input stream");
     }
