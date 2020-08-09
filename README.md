@@ -24,4 +24,12 @@
 
 A detailed description of the library can be found in the following files:
 
-* [docs/functions.md](docs/functions.md)
+* [docs/conventions.md](docs/conventions.md)
+
+* [docs/containers.md](docs/containers.md)
+* [docs/memory.md](docs/memory.md)
+* [docs/panics.md](docs/panics.md)
+* [docs/streams.md](docs/streams.md)
+* [docs/strs.md](docs/strs.md)
+* [docs/tests.md](docs/tests.md)
+* [docs/text.md](docs/text.md)

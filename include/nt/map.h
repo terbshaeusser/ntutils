@@ -111,12 +111,13 @@
                                    key) != NULL;                               \
   }                                                                            \
                                                                                \
-  static inline value_type *name##_get(name##_t *self, key_type key) {         \
+  static inline value_type const *name##_get(name##_t const *self,             \
+                                             key_type key) {                   \
     return P_nt_map_get(self, &key);                                           \
   }                                                                            \
                                                                                \
-  static inline value_type *name##_get_ref(name##_t *self,                     \
-                                           key_type const *key) {              \
+  static inline value_type const *name##_get_ref(name##_t const *self,         \
+                                                 key_type const *key) {        \
     return P_nt_map_get(self, key);                                            \
   }                                                                            \
                                                                                \
@@ -142,6 +143,6 @@ bool P_nt_map_add(void *self, void const *key, void const *value);
 
 void P_nt_map_put(void *self, void const *key, void const *value);
 
-void *P_nt_map_get(void *self, void const *key);
+void const *P_nt_map_get(void const *self, void const *key);
 
 #endif // NTUTILS_MAP_H
