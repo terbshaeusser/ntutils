@@ -1,10 +1,10 @@
 #include "nt/panic.h"
 #include "nt/config.h"
+#include "nt/thread.h"
 #include <assert.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <threads.h>
 
 typedef struct {
   nt_panic_handler_t handler;

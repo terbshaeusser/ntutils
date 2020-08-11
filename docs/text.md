@@ -136,6 +136,50 @@ Writes the UTF-8 BOM to the passed string. The caller is responsible that at lea
 available.
 
 
+### nt_utf8_to_wide
+
+Include: [nt/utf8.h](../include/nt/utf8.h)
+
+Parameters:
+
+* dst (`wchar_t*`): A pointer to a buffer where the result should be written or `NULL`.
+* dst_len (`size_t`): The capacity of the destination buffer in `wchar_t`.
+* src (`char const*`): The UTF-8 encoded string that should be converted.
+* src_len (`size_t`, optional): The length of the UTF-8 encoded string or `0` to indicate that the function should
+  determine the length.
+
+Return:
+
+* (`size_t`) The number of elements written to the destination buffer. If `dst_len == 0`, the number of elements that
+  would be necessary for conversion. `0` indicates an error.
+
+Converts an UTF-8 encoded string to a wide string. The function writes a terminating 0 element if `src_len == 0` and
+additional space is available in the destination buffer.
+This function is only defined for Windows targets.
+
+
+### nt_utf8_from_wide
+
+Include: [nt/utf8.h](../include/nt/utf8.h)
+
+Parameters:
+
+* dst (`char*`): A pointer to a buffer where the result should be written or `NULL`.
+* dst_len (`size_t`): The capacity of the destination buffer.
+* src (`wchar_t const*`): The wide string that should be converted.
+* src_len (`size_t`, optional): The length of the wide string in `wchar_t` or `0` to indicate that the function should
+  determine the length.
+
+Return:
+
+* (`size_t`) The number of elements written to the destination buffer. If `dst_len == 0`, the number of elements that
+  would be necessary for conversion. `0` indicates an error.
+
+Converts a wide string to an UTF-8 encoded string. The function writes a terminating 0 element if `src_len == 0` and
+additional space is available in the destination buffer.
+This function is only defined for Windows targets.
+
+
 ## Reader
 
 A reader takes a stream as source and reads it code point by code point. Additionally a line and column counter is
