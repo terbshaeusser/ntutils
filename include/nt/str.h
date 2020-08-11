@@ -133,4 +133,10 @@ size_t P_nt_str_rfind_cstr(nt_str_t const *self, nt_cstr_t sub_str,
 size_t P_nt_str_rfind_str(nt_str_t const *self, nt_str_t const *sub_str,
                           size_t start);
 
+#define nt_str_slice(self, start, ...)                                         \
+  P_nt_str_slice(self, start,                                                  \
+                 NT_GET_ARG0_OR_DEFAULT(0xFFFFFFFFFFFFFFFFull, __VA_ARGS__))
+
+nt_str_t P_nt_str_slice(nt_str_t const *self, size_t start, size_t end);
+
 #endif // NTUTILS_STR_H

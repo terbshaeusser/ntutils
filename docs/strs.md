@@ -250,3 +250,18 @@ Return:
 * (`size_t`) The index where the next occurrence of `sub_str` was found or `NT_STR_NOT_FOUND`.
 
 Searches from the specified start to the beginning of the passed string for a given sub string.
+
+
+### nt_str_slice
+
+Include: [nt/str.h](../include/nt/str.h)
+
+Parameters:
+
+* self (`nt_str_t const*`): An initialized string instance.
+* start (`size_t`): The index where the new string should start (inclusive).
+* end (`size_t`, optional): The index where the new string should end (inclusive).
+
+Return:
+
+* (`nt_str_t`) A new string instance containing the bytes specified by `start` and `end`.
