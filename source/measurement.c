@@ -4,16 +4,18 @@
 #include <stdio.h>
 
 #ifdef _WIN32
-
 #include <windows.h>
+
+_Static_assert(sizeof(int64_t) == sizeof(LARGE_INTEGER),
+               "The size of LARGE_INTEGER and int64_t must be equal");
 
 int64_t P_nt_time_in_us(int64_t *freq, int64_t const *prev) {
   if (!prev) {
-    QueryPerformanceFrequency(freq);
+    QueryPerformanceFrequency((LARGE_INTEGER *)freq);
   }
 
   int64_t time;
-  QueryPerformanceCounter(&time);
+  QueryPerformanceCounter((LARGE_INTEGER *)&time);
 
   if (prev) {
     return (time - *prev) * 1000000 / *freq;
@@ -21,9 +23,7 @@ int64_t P_nt_time_in_us(int64_t *freq, int64_t const *prev) {
 
   return time;
 }
-
 #else
-
 #include <sys/time.h>
 
 int64_t P_nt_time_in_us(int64_t *freq, int64_t const *prev) {
@@ -39,7 +39,6 @@ int64_t P_nt_time_in_us(int64_t *freq, int64_t const *prev) {
 
   return prev ? time - *prev : time;
 }
-
 #endif
 
 void nt_print_measure(int64_t time) {

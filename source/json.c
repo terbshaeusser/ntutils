@@ -1,6 +1,6 @@
 #include "nt/json.h"
+#include "nt/thread.h"
 #include <stdlib.h>
-#include <threads.h>
 
 typedef struct {
   nt_reader_t *reader;

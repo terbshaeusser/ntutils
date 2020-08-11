@@ -20,7 +20,7 @@ static void test_empty() {
   nt_assert_equal(1, column);
 
   nt_reader_free(&reader);
-  stream.free(&stream);
+  nt_stream_free(&stream);
 }
 
 static void test_simple() {
@@ -51,7 +51,7 @@ static void test_simple() {
   nt_assert_equal(4, column);
 
   nt_reader_free(&reader);
-  stream.free(&stream);
+  nt_stream_free(&stream);
 }
 
 static void test_utf8() {
@@ -96,7 +96,7 @@ static void test_utf8() {
   nt_assert_equal(5, column);
 
   nt_reader_free(&reader);
-  stream.free(&stream);
+  nt_stream_free(&stream);
 }
 
 static void test_lookahead() {
@@ -127,7 +127,7 @@ static void test_lookahead() {
   nt_assert_equal(4, column);
 
   nt_reader_free(&reader);
-  stream.free(&stream);
+  nt_stream_free(&stream);
 }
 
 int main() {

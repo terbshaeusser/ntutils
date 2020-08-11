@@ -1,9 +1,65 @@
 #include "nt/stream.h"
 #include "nt/panic.h"
 
+typedef enum {
+  FILE_MODE_RB,
+  FILE_MODE_WB,
+  FILE_MODE_RB_PLUS,
+  FILE_MODE_WB_PLUS
+} intern_file_mode_t;
+
 #ifdef _WIN32
+#include "nt/mem.h"
+#include "nt/utf8.h"
+
 #define ftello _ftelli64
 #define fseeko _fseeki64
+
+static FILE *fopen_ex(char const *path, intern_file_mode_t mode) {
+  wchar_t const *mode_str;
+
+  switch (mode) {
+  case FILE_MODE_RB:
+    mode_str = L"rb";
+    break;
+  case FILE_MODE_WB:
+    mode_str = L"wb";
+    break;
+  case FILE_MODE_RB_PLUS:
+    mode_str = L"r+b";
+    break;
+  case FILE_MODE_WB_PLUS:
+    mode_str = L"w+b";
+    break;
+  }
+
+  int32_t len = -1;
+  wchar_t *u16_path = nt_utf8_to_wide(path, &len);
+  FILE *file = _wfopen(u16_path, mode_str);
+  nt_free(u16_path);
+  return file;
+}
+#else
+static FILE *fopen_ex(char const *path, intern_file_mode_t mode) {
+  char const *mode_str;
+
+  switch (mode) {
+  case FILE_MODE_RB:
+    mode_str = "rb";
+    break;
+  case FILE_MODE_WB:
+    mode_str = "wb";
+    break;
+  case FILE_MODE_RB_PLUS:
+    mode_str = "r+b";
+    break;
+  case FILE_MODE_WB_PLUS:
+    mode_str = "w+b";
+    break;
+  }
+
+  return fopen(path, mode_str);
+}
 #endif
 
 static void file_stream_free(nt_stream_t *self) { fclose(self->P_data.file); }
@@ -17,8 +73,7 @@ static int64_t file_stream_tell(nt_stream_t const *self) {
 }
 
 static bool file_stream_seek(nt_stream_t *self, int64_t pos, bool from_end) {
-  return fseeko(self->P_data.file, (__off_t)pos,
-                from_end ? SEEK_END : SEEK_SET) == 0;
+  return fseeko(self->P_data.file, pos, from_end ? SEEK_END : SEEK_SET) == 0;
 }
 
 static int32_t file_stream_read(nt_stream_t *self, void *block, size_t size) {
@@ -50,7 +105,7 @@ static int32_t stream_deny_write(nt_stream_t *self, void const *block,
 }
 
 static bool open_file_ro(nt_stream_t *stream, char const *path) {
-  FILE *file = fopen(path, "rb");
+  FILE *file = fopen_ex(path, FILE_MODE_RB);
   if (!file) {
     return false;
   }
@@ -66,7 +121,7 @@ static bool open_file_ro(nt_stream_t *stream, char const *path) {
 }
 
 static bool open_file_wo(nt_stream_t *stream, char const *path) {
-  FILE *file = fopen(path, "wb");
+  FILE *file = fopen_ex(path, FILE_MODE_WB);
   if (!file) {
     return false;
   }
@@ -82,9 +137,9 @@ static bool open_file_wo(nt_stream_t *stream, char const *path) {
 }
 
 static bool open_file_rw(nt_stream_t *stream, char const *path) {
-  FILE *file = fopen(path, "r+b");
+  FILE *file = fopen_ex(path, FILE_MODE_RB_PLUS);
   if (!file) {
-    file = fopen(path, "w+b");
+    file = fopen_ex(path, FILE_MODE_WB_PLUS);
     if (!file) {
       return false;
     }

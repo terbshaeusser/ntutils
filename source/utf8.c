@@ -1,6 +1,13 @@
 #include "nt/utf8.h"
 #include <string.h>
 
+#ifdef _WIN32
+#include "nt/assert.h"
+#include <windows.h>
+
+#define thread_local __thread
+#endif
+
 int nt_utf8_len(nt_cp_t cp) {
   if (cp.code_point <= 0x7F) {
     return 1;
@@ -128,3 +135,65 @@ bool nt_utf8_has_bom(char const *str, size_t len) {
 }
 
 void nt_utf8_write_bom(char *str) { memcpy(str, utf8_bom, NT_UTF8_BOM_LEN); }
+
+static bool is_multibyte_w_len(char const *str, size_t len) {
+  while (len > 0) {
+    if (((uint8_t)*str) > 0x7Fu) {
+      return true;
+    }
+
+    ++str;
+    --len;
+  }
+
+  return false;
+}
+
+static bool is_multibyte_wo_len(char const *str) {
+  while (true) {
+    uint8_t c = (uint8_t)*str;
+
+    if (c == 0) {
+      return false;
+    }
+    if (c > 0x7Fu) {
+      return true;
+    }
+
+    ++str;
+  }
+}
+
+bool P_nt_utf8_is_multibyte(char const *str, size_t len) {
+  if (len == (size_t)0xFFFFFFFFFFFFFFFFull) {
+    return is_multibyte_wo_len(str);
+  }
+
+  return is_multibyte_w_len(str, len);
+}
+
+#ifdef _WIN32
+#ifndef WC_ERR_INVALID_CHARS
+#define WC_ERR_INVALID_CHARS 0x0080
+#endif
+
+size_t P_nt_utf8_to_wide(wchar_t *dst, size_t dst_len, char const *src,
+                         size_t src_len) {
+  bool no_src_len = src_len == 0;
+  int written =
+      MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, src,
+                          no_src_len ? -1 : (int)src_len, dst, dst_len);
+
+  return (size_t)written - (no_src_len ? 1 : 0);
+}
+
+size_t P_nt_utf8_from_wide(char *dst, size_t dst_len, wchar_t const *src,
+                           size_t src_len) {
+  bool no_src_len = src_len == 0;
+  int written = WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, src,
+                                    no_src_len ? -1 : (int)src_len, dst,
+                                    dst_len, NULL, NULL);
+
+  return (size_t)written - (no_src_len ? 1 : 0);
+}
+#endif

@@ -26,7 +26,7 @@ static void test_true() {
 
   nt_assert_true(nt_json_parse(&reader, NULL, eval_true, no_error_handler));
 
-  stream.free(&stream);
+  nt_stream_free(&stream);
 }
 
 static bool eval_zero(void *ctx, nt_json_key_t const *key,
@@ -49,7 +49,7 @@ static void test_zero() {
 
   nt_assert_true(nt_json_parse(&reader, NULL, eval_zero, no_error_handler));
 
-  stream.free(&stream);
+  nt_stream_free(&stream);
 }
 
 static bool eval_float(void *ctx, nt_json_key_t const *key,
@@ -74,7 +74,7 @@ static void test_float() {
 
   nt_assert_true(nt_json_parse(&reader, NULL, eval_float, no_error_handler));
 
-  stream.free(&stream);
+  nt_stream_free(&stream);
 }
 
 static bool eval_string(void *ctx, nt_json_key_t const *key,
@@ -98,7 +98,7 @@ static void test_string() {
 
   nt_assert_true(nt_json_parse(&reader, NULL, eval_string, no_error_handler));
 
-  stream.free(&stream);
+  nt_stream_free(&stream);
 }
 
 static bool eval_string_escape(void *ctx, nt_json_key_t const *key,
@@ -123,7 +123,7 @@ static void test_string_escape() {
   nt_assert_true(
       nt_json_parse(&reader, NULL, eval_string_escape, no_error_handler));
 
-  stream.free(&stream);
+  nt_stream_free(&stream);
 }
 
 typedef struct {
@@ -177,7 +177,7 @@ static void test_array() {
   nt_assert_true(nt_json_parse(&reader, &ctx, eval_array, no_error_handler));
   nt_assert_equal(4, ctx.next_value);
 
-  stream.free(&stream);
+  nt_stream_free(&stream);
 }
 
 typedef struct {
@@ -234,7 +234,7 @@ static void test_object() {
   nt_assert_true(nt_json_parse(&reader, &ctx, eval_object, no_error_handler));
   nt_assert_equal(3, ctx.next_value);
 
-  stream.free(&stream);
+  nt_stream_free(&stream);
 }
 
 static bool
@@ -293,7 +293,7 @@ static void test_complex() {
 
   nt_assert_true(nt_json_parse(&reader, NULL, eval_complex, no_error_handler));
 
-  stream.free(&stream);
+  nt_stream_free(&stream);
 }
 
 int main() {

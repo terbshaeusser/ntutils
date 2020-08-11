@@ -20,6 +20,15 @@
 * File system utility functions (TODO)
 
 
+## Restrictions
+
+The following requirements must be met by the C compiler to compile this library:
+
+* C11 support
+* Support of the `__VA_OPT__` preprocessor statement
+* Support for thread local storage
+
+
 ## Documentation
 
 A detailed description of the library can be found in the following files:

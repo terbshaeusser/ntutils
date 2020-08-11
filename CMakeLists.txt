@@ -22,6 +22,7 @@ add_library(ntutils
         include/nt/str.h
         include/nt/stream.h
         include/nt/test.h
+        include/nt/thread.h
         include/nt/utf8.h
 
         source/circular.c

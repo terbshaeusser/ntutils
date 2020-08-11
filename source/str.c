@@ -69,6 +69,53 @@ static inline void set_long_len(nt_str_t *self, size_t len) {
 }
 #endif
 
+#ifdef _WIN32
+static void const *memmem(void const *haystack_start, size_t haystack_len,
+                          void const *needle_start, size_t needle_len) {
+  if (needle_len == 0 || haystack_len < needle_len) {
+    return NULL;
+  }
+
+  char const *ptr = haystack_start;
+  size_t remaining_len = haystack_len - needle_len + 1;
+  char c = *(char const *)needle_start;
+
+  while (remaining_len > 0) {
+    ptr = memchr(ptr, c, remaining_len);
+    if (!ptr) {
+      return NULL;
+    }
+
+    if (memcmp(ptr, needle_start, needle_len) == 0) {
+      return ptr;
+    }
+
+    ++ptr;
+    remaining_len =
+        haystack_len - needle_len + 1 - (ptr - (char const *)haystack_start);
+  }
+
+  return NULL;
+}
+
+static void const *memrchr(void const *s, int c, size_t n) {
+  if (n == 0) {
+    return NULL;
+  }
+
+  char const *ptr = ((char const *)s) + n - 1;
+  while (ptr >= (char const *)s) {
+    if (*ptr == c) {
+      return ptr;
+    }
+
+    --ptr;
+  }
+
+  return NULL;
+}
+#endif
+
 #define SHORT_CAPACITY (sizeof(nt_str_t) - 1)
 
 static inline void set_len(nt_str_t *self, size_t len) {
@@ -86,14 +133,14 @@ nt_str_t P_nt_str_new_str(nt_str_t const *src) {
 }
 
 nt_str_t nt_str_empty() {
-  nt_str_t str;
+  nt_str_t str = {0};
   set_short(&str, true);
   set_short_len(&str, 0);
   return str;
 }
 
 nt_str_t P_nt_str_of_cstr(nt_cstr_t src, size_t count) {
-  nt_str_t str;
+  nt_str_t str = {0};
   size_t total_len = src.len * count;
 
   if (total_len <= SHORT_CAPACITY) {

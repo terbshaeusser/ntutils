@@ -66,11 +66,43 @@ static void test_utf8_has_bom() {
   nt_assert_false(nt_utf8_has_bom("abcdefgh", 8));
 }
 
+#ifdef _WIN32
+static void test_utf8_to_wide() {
+  wchar_t buffer[20];
+
+  nt_assert_equal(5, nt_utf8_to_wide(NULL, 0, "Hello"));
+
+  nt_assert_equal(
+      5, nt_utf8_to_wide(buffer, sizeof(buffer) / sizeof(wchar_t), "Hello"));
+  nt_assert_equal(L"Hello", buffer, wcscmp);
+
+  nt_assert_equal(
+      3, nt_utf8_to_wide(buffer, sizeof(buffer) / sizeof(wchar_t), "abc", 3));
+  nt_assert_equal(L"abclo", buffer, wcscmp);
+}
+
+static void test_utf8_from_wide() {
+  char buffer[20];
+
+  nt_assert_equal(5, nt_utf8_from_wide(NULL, 0, L"Hello"));
+
+  nt_assert_equal(5, nt_utf8_from_wide(buffer, sizeof(buffer), L"Hello"));
+  nt_assert_equal("Hello", buffer);
+
+  nt_assert_equal(3, nt_utf8_from_wide(buffer, sizeof(buffer), L"abc", 3));
+  nt_assert_equal("abclo", buffer);
+}
+#endif
+
 int main() {
   nt_test(test_utf8_len);
   nt_test(test_utf8_read);
   nt_test(test_utf8_write);
   nt_test(test_utf8_has_bom);
+#ifdef _WIN32
+  nt_test(test_utf8_to_wide);
+  nt_test(test_utf8_from_wide);
+#endif
 
   return 0;
 }
