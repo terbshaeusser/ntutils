@@ -359,3 +359,17 @@ size_t P_nt_str_rfind_str(nt_str_t const *self, nt_str_t const *sub_str,
   return P_nt_str_rfind_cstr(
       self, nt_cstr(nt_str_str(sub_str), nt_str_len(sub_str)), start);
 }
+
+nt_str_t P_nt_str_slice(nt_str_t const *self, size_t start, size_t end) {
+  size_t len = nt_str_len(self);
+
+  nt_assert(start < len);
+
+  if (end >= len) {
+    end = len - 1;
+  }
+
+  nt_assert(start <= end);
+
+  return nt_str_new(nt_cstr(nt_str_str(self) + start, end - start + 1));
+}

@@ -207,6 +207,24 @@ static void test_rfind() {
   nt_str_free(&str);
 }
 
+static void test_slice() {
+  nt_str_t str = nt_str_new(nt_cstr("Hello World!"));
+
+  nt_str_t str2 = nt_str_slice(&str, 6);
+  nt_assert_equal("World!", nt_str_str(&str2));
+  nt_str_free(&str2);
+
+  str2 = nt_str_slice(&str, 6, 8);
+  nt_assert_equal("Wor", nt_str_str(&str2));
+  nt_str_free(&str2);
+
+  str2 = nt_str_slice(&str, 6, 6);
+  nt_assert_equal("W", nt_str_str(&str2));
+  nt_str_free(&str2);
+
+  nt_str_free(&str);
+}
+
 int main() {
   nt_test(test_short);
   nt_test(test_long);
@@ -218,6 +236,7 @@ int main() {
   nt_test(test_format);
   nt_test(test_find);
   nt_test(test_rfind);
+  nt_test(test_slice);
 
   return 0;
 }
