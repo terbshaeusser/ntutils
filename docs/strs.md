@@ -82,6 +82,18 @@ Return:
 * (`size_t`) The number of bytes stored in the string.
 
 
+### nt_str_set_len
+
+Include: [nt/str.h](../include/nt/str.h)
+
+Parameters:
+
+* self (`nt_str_t*`): An initialized string instance.
+* len (`size_t`): The new length.
+
+Sets the length of a string. The new length must be smaller than or equal the capacity.
+
+
 ### nt_str_capacity
 
 Include: [nt/str.h](../include/nt/str.h)
@@ -265,3 +277,16 @@ Parameters:
 Return:
 
 * (`nt_str_t`) A new string instance containing the bytes specified by `start` and `end`.
+
+
+### nt_str_assign
+
+Include: [nt/str.h](../include/nt/str.h)
+
+Parameters:
+
+* self (`nt_str_t*`): An initialized string instance.
+* src (`nt_cstr_t` / `nt_str_t*` / `nt_str_t const*`): An already existing string that is used as source.
+
+Assigns the `src` string content to an already existing string. Possibly already allocated memory is reused when
+possible.

@@ -17,7 +17,7 @@
   * Multi value hash map (TODO)
 
 * JSON parser
-* File system utility functions (TODO)
+* File system utility functions
 
 
 ## Restrictions
@@ -36,6 +36,7 @@ A detailed description of the library can be found in the following files:
 * [docs/conventions.md](docs/conventions.md)
 
 * [docs/containers.md](docs/containers.md)
+* [docs/files.md](docs/files.md)
 * [docs/memory.md](docs/memory.md)
 * [docs/panics.md](docs/panics.md)
 * [docs/streams.md](docs/streams.md)
