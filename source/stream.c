@@ -9,8 +9,7 @@ typedef enum {
 } intern_file_mode_t;
 
 #ifdef _WIN32
-#include "nt/mem.h"
-#include "nt/utf8.h"
+#include "nt/files.h"
 
 #define ftello _ftelli64
 #define fseeko _fseeki64
@@ -33,11 +32,7 @@ static FILE *fopen_ex(char const *path, intern_file_mode_t mode) {
     break;
   }
 
-  int32_t len = -1;
-  wchar_t *u16_path = nt_utf8_to_wide(path, &len);
-  FILE *file = _wfopen(u16_path, mode_str);
-  nt_free(u16_path);
-  return file;
+  return _wfopen(nt_wide_path(path), mode_str);
 }
 #else
 static FILE *fopen_ex(char const *path, intern_file_mode_t mode) {

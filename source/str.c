@@ -156,9 +156,14 @@ nt_str_t P_nt_str_of_cstr(nt_cstr_t src, size_t count) {
 
   char *ptr = (char *)nt_str_str(&str);
   if (total_len > 0) {
-    for (size_t i = 0; i < count; ++i) {
-      memcpy(ptr, src.str, src.len);
-      ptr += src.len;
+    if (src.len == 1) {
+      memset(ptr, *src.str, count);
+      ptr += count;
+    } else {
+      for (size_t i = 0; i < count; ++i) {
+        memcpy(ptr, src.str, src.len);
+        ptr += src.len;
+      }
     }
   }
   *ptr = 0;
@@ -182,6 +187,13 @@ size_t nt_str_len(nt_str_t const *self) {
   }
 
   return get_long_len(self);
+}
+
+void nt_str_set_len(nt_str_t *self, size_t len) {
+  nt_assert(len <= nt_str_capacity(self));
+
+  set_len(self, len);
+  ((char *)nt_str_str(self))[len] = 0;
 }
 
 size_t nt_str_capacity(nt_str_t const *self) {
@@ -419,4 +431,19 @@ nt_str_t P_nt_str_slice(nt_str_t const *self, size_t start, size_t end) {
   nt_assert(start <= end);
 
   return nt_str_new(nt_cstr(nt_str_str(self) + start, end - start + 1));
+}
+
+void P_nt_str_assign_cstr(nt_str_t *self, nt_cstr_t src) {
+  size_t old_len = nt_str_len(self);
+
+  if (old_len < src.len) {
+    nt_str_reserve(self, src.len - old_len);
+  }
+
+  memcpy((char *)nt_str_str(self), src.str, src.len);
+  set_len(self, src.len);
+}
+
+void P_nt_str_assign_str(nt_str_t *self, nt_str_t const *src) {
+  P_nt_str_assign_cstr(self, nt_cstr(nt_str_str(src), nt_str_len(src)));
 }

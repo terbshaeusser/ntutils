@@ -51,6 +51,8 @@ void nt_str_free(nt_str_t *self);
 
 size_t nt_str_len(nt_str_t const *self);
 
+void nt_str_set_len(nt_str_t *self, size_t len);
+
 size_t nt_str_capacity(nt_str_t const *self);
 
 char const *nt_str_str(nt_str_t const *self);
@@ -138,5 +140,16 @@ size_t P_nt_str_rfind_str(nt_str_t const *self, nt_str_t const *sub_str,
                  NT_GET_ARG0_OR_DEFAULT(0xFFFFFFFFFFFFFFFFull, __VA_ARGS__))
 
 nt_str_t P_nt_str_slice(nt_str_t const *self, size_t start, size_t end);
+
+#define nt_str_assign(self, src)                                               \
+  _Generic(src, nt_cstr_t                                                      \
+           : P_nt_str_assign_cstr, nt_str_t*                                   \
+           : P_nt_str_assign_str, nt_str_t const*                              \
+           : P_nt_str_assign_str                                               \
+  )(self, src)
+
+void P_nt_str_assign_cstr(nt_str_t *self, nt_cstr_t src);
+
+void P_nt_str_assign_str(nt_str_t *self, nt_str_t const *src);
 
 #endif // NTUTILS_STR_H

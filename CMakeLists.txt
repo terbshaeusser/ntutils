@@ -8,6 +8,7 @@ add_library(ntutils
         include/nt/circular.h
         include/nt/compare.h
         include/nt/config.h
+        include/nt/files.h
         include/nt/hash.h
         include/nt/hash_container.h
         include/nt/json.h
@@ -26,6 +27,7 @@ add_library(ntutils
         include/nt/utf8.h
 
         source/circular.c
+        source/files.c
         source/hash.c
         source/hash_container.c
         source/json.c
@@ -54,6 +56,7 @@ endfunction()
 
 enable_testing()
 create_test(ntutils_circular_tests tests/circular.c)
+create_test(ntutils_files_tests tests/files.c)
 create_test(ntutils_json_tests tests/json.c)
 create_test(ntutils_list_tests tests/list.c)
 create_test(ntutils_map_tests tests/map.c)
