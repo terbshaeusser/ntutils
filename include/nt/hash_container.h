@@ -11,6 +11,7 @@ typedef struct {
   uint32_t next;
   uint32_t hash;
   bool used;
+  bool next_has_same_key;
 } P_nt_hash_container_entry_hdr_t;
 
 typedef struct {
@@ -31,6 +32,9 @@ void P_nt_hash_container_reserve(P_nt_hash_container_t *self, size_t amount);
 
 bool P_nt_hash_container_add(P_nt_hash_container_t *self, void const *key,
                              P_nt_hash_container_entry_hdr_t **entry);
+
+void P_nt_hash_container_add_multi(P_nt_hash_container_t *self, void const *key,
+                                   P_nt_hash_container_entry_hdr_t **entry);
 
 bool P_nt_hash_container_remove(P_nt_hash_container_t *self, void const *key);
 

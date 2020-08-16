@@ -685,6 +685,34 @@ Return:
 Adds a given key and value to the map.
 
 
+### *_add_multi
+
+Include: [nt/map.h](../include/nt/map.h)
+
+Parameters:
+
+* self (`name_t*`): An initialized map instance.
+* key (`key_type`): The key to add.
+* value (`value_type`): The value to add.
+
+Adds a given key and value to the map. If the key already exists, a new key-value pair is inserted.
+Use the iterator to query all values associated to a given key.
+
+
+### *_add_multi_ref
+
+Include: [nt/map.h](../include/nt/map.h)
+
+Parameters:
+
+* self (`name_t*`): An initialized map instance.
+* key (`key_type const*`): A pointer to the key to add.
+* value (`value_type const*`): A pointer to the value to add.
+
+Adds a given key and value to the map. If the key already exists, a new key-value pair is inserted.
+Use the iterator to query all values associated to a given key.
+
+
 ### *_put
 
 Include: [nt/map.h](../include/nt/map.h)
@@ -695,7 +723,7 @@ Parameters:
 * key (`key_type`): The key to add.
 * value (`value_type`): The value to add.
 
-Adds a given key and value to the map. If the key already exists, the value will be overwritten.
+Adds a given key and value to the map. If the key already exists, one of the connected values will be overwritten.
 
 
 ### *_put_ref
@@ -708,7 +736,7 @@ Parameters:
 * key (`key_type const*`): A pointer to the key to add.
 * value (`value_type const*`): A pointer to the value to add.
 
-Adds a given key and value to the map. If the key already exists, the value will be overwritten.
+Adds a given key and value to the map. If the key already exists, one of the connected values will be overwritten.
 
 
 ### *_remove
@@ -724,7 +752,7 @@ Return:
 
 * (`bool`) `true` if the key existed in the map and was removed.
 
-Removes a given key and its associated value from the map.
+Removes a given key and one of the associated values from the map.
 
 
 ### *_remove_ref
@@ -740,7 +768,7 @@ Return:
 
 * (`bool`) `true` if the key existed in the map and was removed.
 
-Removes a given key and its associated value from the map.
+Removes a given key and one of the associated values from the map.
 
 
 ### *_clear
@@ -797,9 +825,9 @@ Parameters:
 
 Return:
 
-* (`value_type const*`) A pointer to the value associated with the passed key or `NULL`.
+* (`value_type const*`) A pointer to one of the values associated with the passed key or `NULL`.
 
-Searches for a key inside the map and returns the connected value.
+Searches for a key inside the map and returns one of the connected values.
 
 
 ### *_get_ref
@@ -813,9 +841,9 @@ Parameters:
 
 Return:
 
-* (`value_type const*`) A pointer to the value associated with the passed key or `NULL`.
+* (`value_type const*`) A pointer to one of the values associated with the passed key or `NULL`.
 
-Searches for a key inside the map and returns the connected value.
+Searches for a key inside the map and returns one of the connected values.
 
 
 ### *_iterate

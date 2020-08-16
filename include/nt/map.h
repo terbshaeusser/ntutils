@@ -78,6 +78,16 @@
     return P_nt_map_add(self, key, value);                                     \
   }                                                                            \
                                                                                \
+  static inline void name##_add_multi(name##_t *self, key_type key,            \
+                                      value_type value) {                      \
+    P_nt_map_add_multi(self, &key, &value);                                    \
+  }                                                                            \
+                                                                               \
+  static inline void name##_add_multi_ref(name##_t *self, key_type const *key, \
+                                          value_type const *value) {           \
+    P_nt_map_add_multi(self, key, value);                                      \
+  }                                                                            \
+                                                                               \
   static inline void name##_put(name##_t *self, key_type key,                  \
                                 value_type value) {                            \
     P_nt_map_put(self, &key, &value);                                          \
@@ -140,6 +150,8 @@
   }
 
 bool P_nt_map_add(void *self, void const *key, void const *value);
+
+void P_nt_map_add_multi(void *self, void const *key, void const *value);
 
 void P_nt_map_put(void *self, void const *key, void const *value);
 

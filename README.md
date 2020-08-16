@@ -14,7 +14,7 @@
   * Queue (TODO)
   * Hash set
   * Hash map
-  * Multi value hash map (TODO)
+  * Multi value hash map
 
 * JSON parser
 * File system utility functions
