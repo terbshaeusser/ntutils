@@ -108,8 +108,28 @@ static uint32_t mark_as_used(P_nt_hash_container_t *self) {
     get_entry(self, entry->next)->prev = NIL;
   }
   entry->used = true;
+  entry->next_has_same_key = false;
 
   return index;
+}
+
+static uint32_t find_entry_in_bucket(P_nt_hash_container_t *self,
+                                     uint32_t bucket, uint32_t hash,
+                                     void const *key) {
+  uint32_t index = bucket;
+
+  while (index != NIL) {
+    P_nt_hash_container_entry_hdr_t *entry = get_entry(self, index);
+
+    if (entry->hash == hash &&
+        self->P_comparator(key, get_key(self, entry)) == NT_COMPARE_EQUAL) {
+      return index;
+    }
+
+    index = entry->next;
+  }
+
+  return NIL;
 }
 
 void P_nt_hash_container_reserve(P_nt_hash_container_t *self, size_t amount) {
@@ -146,9 +166,29 @@ void P_nt_hash_container_reserve(P_nt_hash_container_t *self, size_t amount) {
     }
 
     uint32_t *bucket = &self->P_buckets[entry->hash % new_bucket_capacity];
-    entry->prev = NIL;
-    entry->next = *bucket;
-    *bucket = i;
+    uint32_t next_index =
+        find_entry_in_bucket(self, *bucket, entry->hash, get_key(self, entry));
+
+    if (next_index == NIL) {
+      entry->prev = NIL;
+      entry->next = *bucket;
+      entry->next_has_same_key = false;
+      *bucket = i;
+    } else {
+      P_nt_hash_container_entry_hdr_t *next_entry = get_entry(self, next_index);
+
+      entry->next_has_same_key = true;
+      entry->prev = next_entry->prev;
+      entry->next = next_index;
+
+      if (next_entry->prev == NIL) {
+        *bucket = i;
+      } else {
+        get_entry(self, next_entry->prev)->next = i;
+      }
+
+      next_entry->prev = i;
+    }
   }
 
   self->P_entry_capacity = new_entry_capacity;
@@ -181,6 +221,44 @@ bool P_nt_hash_container_add(P_nt_hash_container_t *self, void const *key,
   return true;
 }
 
+void P_nt_hash_container_add_multi(P_nt_hash_container_t *self, void const *key,
+                                   P_nt_hash_container_entry_hdr_t **entry) {
+  if (self->P_entry_count == self->P_entry_capacity) {
+    P_nt_hash_container_reserve(self, 1);
+  }
+
+  uint32_t hash;
+  uint32_t *bucket;
+  P_nt_hash_container_entry_hdr_t *existing_entry =
+      get_entry_and_bucket(self, key, &hash, &bucket);
+
+  uint32_t entry_index = mark_as_used(self);
+  *entry = get_entry(self, entry_index);
+  (*entry)->hash = hash;
+  memcpy(get_key(self, *entry), key, self->P_key_size);
+
+  if (existing_entry) {
+    (*entry)->next_has_same_key = true;
+    (*entry)->prev = existing_entry->prev;
+    (*entry)->next = get_entry_index(self, existing_entry);
+
+    if (existing_entry->prev == NIL) {
+      *bucket = entry_index;
+    } else {
+      get_entry(self, existing_entry->prev)->next = entry_index;
+    }
+
+    existing_entry->prev = entry_index;
+  } else {
+    (*entry)->prev = NIL;
+    (*entry)->next = *bucket;
+
+    *bucket = entry_index;
+  }
+
+  ++self->P_entry_count;
+}
+
 bool P_nt_hash_container_remove(P_nt_hash_container_t *self, void const *key) {
   uint32_t hash;
   uint32_t *bucket;
@@ -192,7 +270,12 @@ bool P_nt_hash_container_remove(P_nt_hash_container_t *self, void const *key) {
   }
 
   if (entry->prev != NIL) {
-    get_entry(self, entry->prev)->next = entry->next;
+    P_nt_hash_container_entry_hdr_t *prev_entry = get_entry(self, entry->prev);
+    prev_entry->next = entry->next;
+
+    if (prev_entry->next_has_same_key) {
+      prev_entry->next_has_same_key = entry->next_has_same_key;
+    }
   } else {
     *bucket = entry->next;
   }
@@ -244,14 +327,21 @@ P_nt_hash_container_iterator_next(P_nt_hash_container_iterator_t *self) {
       uint32_t *bucket;
       entry =
           get_entry_and_bucket(container, self->P_key, &self->P_hash, &bucket);
-      self->P_index = entry->next;
+      if (entry) {
+        self->P_index = get_entry_index(container, entry);
+      } else {
+        self->P_index = NIL;
+      }
     } else {
-      do {
+      P_nt_hash_container_entry_hdr_t *prev_entry =
+          get_entry(container, self->P_index);
+
+      if (prev_entry->next_has_same_key) {
+        self->P_index = prev_entry->next;
         entry = get_entry(container, self->P_index);
-        self->P_index = entry->next;
-      } while (entry->hash != self->P_hash ||
-               container->P_comparator(
-                   self->P_key, get_key(container, entry)) != NT_COMPARE_EQUAL);
+      } else {
+        self->P_index = NIL;
+      }
     }
 
     if (self->P_index == NIL) {

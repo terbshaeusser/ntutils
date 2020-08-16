@@ -21,6 +21,15 @@ bool P_nt_map_add(void *self, void const *key, void const *value) {
   return added;
 }
 
+void P_nt_map_add_multi(void *self, void const *key, void const *value) {
+  void_map_t *self2 = self;
+
+  P_nt_hash_container_entry_hdr_t *entry;
+  P_nt_hash_container_add_multi(self, key, &entry);
+
+  memcpy(get_value(self2, entry), value, self2->P_value_size);
+}
+
 void P_nt_map_put(void *self, void const *key, void const *value) {
   void_map_t *self2 = self;
 
