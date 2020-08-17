@@ -104,6 +104,28 @@ static void test_clear() {
   int_buffer_free(&buffer);
 }
 
+static void test_iterate() {
+  int_buffer_t buffer = int_buffer_new(4);
+
+  for (int i = 0; i < 3; ++i) {
+    int_buffer_push(&buffer, i + 1);
+    nt_assert_equal(i + 1, int_buffer_count(&buffer));
+  }
+
+  for (int j = 0; j < 2; ++j) {
+    int_buffer_iterator_t itr = int_buffer_iterate(&buffer);
+    for (int i = 0; i < 3; ++i) {
+      int const *ptr = int_buffer_iterator_next(&itr);
+
+      nt_assert_not_null(ptr);
+      nt_assert_equal(i + 1, *ptr);
+    }
+    nt_assert_null(int_buffer_iterator_next(&itr));
+  }
+
+  int_buffer_free(&buffer);
+}
+
 NT_CIRC_BUF(int_buffer_fx, int, 4)
 
 static void test_push_fx() {
@@ -202,16 +224,40 @@ static void test_clear_fx() {
   int_buffer_fx_free(&buffer);
 }
 
+static void test_iterate_fx() {
+  int_buffer_fx_t buffer = int_buffer_fx_new(4);
+
+  for (int i = 0; i < 3; ++i) {
+    int_buffer_fx_push(&buffer, i + 1);
+    nt_assert_equal(i + 1, int_buffer_fx_count(&buffer));
+  }
+
+  for (int j = 0; j < 2; ++j) {
+    int_buffer_fx_iterator_t itr = int_buffer_fx_iterate(&buffer);
+    for (int i = 0; i < 3; ++i) {
+      int const *ptr = int_buffer_fx_iterator_next(&itr);
+
+      nt_assert_not_null(ptr);
+      nt_assert_equal(i + 1, *ptr);
+    }
+    nt_assert_null(int_buffer_fx_iterator_next(&itr));
+  }
+
+  int_buffer_fx_free(&buffer);
+}
+
 int main() {
   nt_test(test_push);
   nt_test(test_pop);
   nt_test(test_struct);
   nt_test(test_clear);
+  nt_test(test_iterate);
 
   nt_test(test_push_fx);
   nt_test(test_pop_fx);
   nt_test(test_struct_fx);
   nt_test(test_clear_fx);
+  nt_test(test_iterate_fx);
 
   return 0;
 }

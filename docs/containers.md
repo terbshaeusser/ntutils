@@ -151,6 +151,35 @@ Return:
 Returns the value with the given index. The index is checked with an assert.
 
 
+### *_iterate
+
+Include: [nt/circular.h](../include/nt/circular.h)
+
+Parameters:
+
+* self (`name_t const*`): The circular buffer instance.
+
+Return:
+
+* (`name_iterator_t`) An iterator that can be used to iterate over values in the circular buffer. Modifications on the
+  circular buffer invalidate any existing iterator.
+
+
+### *_iterator_next
+
+Include: [nt/circular.h](../include/nt/circular.h)
+
+Parameters:
+
+* self (`name_iterator_t*`): A circular buffer iterator instance.
+
+Return:
+
+* (`value_type const*`) A pointer to the next value or `NULL` if no more values exist.
+
+Advances the iterator to the next value and returns it.
+
+
 ## List
 
 List types are defined with the `NT_LIST(name, value_type)` macro.
@@ -340,6 +369,35 @@ Return:
 * (`value_type const*`) A pointer to the value with the given index.
 
 Returns the value with the given index. The index is checked with an assert.
+
+
+### *_iterate
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Parameters:
+
+* self (`name_t const*`): The list instance.
+
+Return:
+
+* (`name_iterator_t`) An iterator that can be used to iterate over values in the list. Modifications on the list
+  invalidate any existing iterator.
+
+
+### *_iterator_next
+
+Include: [nt/list.h](../include/nt/list.h)
+
+Parameters:
+
+* self (`name_iterator_t*`): A list iterator instance.
+
+Return:
+
+* (`value_type const*`) A pointer to the next value or `NULL` if no more values exist.
+
+Advances the iterator to the next value and returns it.
 
 
 ## Set

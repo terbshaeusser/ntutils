@@ -105,3 +105,17 @@ void const *P_nt_list_get(void const *self, size_t index) {
 
   return &self2->P_values[index * self2->P_value_size];
 }
+
+void const *P_nt_list_iterator_next(void *self) {
+  void_list_iterator_t *self2 = self;
+  void_list_t const *container = self2->P_container;
+
+  if (self2->P_index >= container->P_count) {
+    return NULL;
+  }
+
+  void const *result =
+      &container->P_values[self2->P_index * container->P_value_size];
+  ++self2->P_index;
+  return result;
+}

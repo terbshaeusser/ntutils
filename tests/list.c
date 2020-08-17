@@ -78,11 +78,34 @@ static void test_remove() {
   int_list_free(&list);
 }
 
+static void test_iterate() {
+  int_list_t list = int_list_new();
+
+  for (int i = 0; i < 3; ++i) {
+    int_list_add(&list, i + 1);
+  }
+  nt_assert_equal(3, int_list_count(&list));
+
+  for (int j = 0; j < 2; ++j) {
+    int_list_iterator_t itr = int_list_iterate(&list);
+    for (int i = 0; i < 3; ++i) {
+      int const *ptr = int_list_iterator_next(&itr);
+
+      nt_assert_not_null(ptr);
+      nt_assert_equal(i + 1, *ptr);
+    }
+    nt_assert_null(int_list_iterator_next(&itr));
+  }
+
+  int_list_free(&list);
+}
+
 int main() {
   nt_test(test_add);
   nt_test(test_add_reserve);
   nt_test(test_insert);
   nt_test(test_remove);
+  nt_test(test_iterate);
 
   return 0;
 }
