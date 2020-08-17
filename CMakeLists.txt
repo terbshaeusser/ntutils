@@ -18,6 +18,7 @@ add_library(ntutils
         include/nt/measurement.h
         include/nt/mem.h
         include/nt/panic.h
+        include/nt/queue.h
         include/nt/reader.h
         include/nt/set.h
         include/nt/str.h
@@ -36,6 +37,7 @@ add_library(ntutils
         source/measurement.c
         source/mem.c
         source/panic.c
+        source/queue.c
         source/reader.c
         source/str.c
         source/stream.c
@@ -61,6 +63,7 @@ create_test(ntutils_json_tests tests/json.c)
 create_test(ntutils_list_tests tests/list.c)
 create_test(ntutils_map_tests tests/map.c)
 create_test(ntutils_mem_tests tests/mem.c)
+create_test(ntutils_queue_tests tests/queue.c)
 create_test(ntutils_reader_tests tests/reader.c)
 create_test(ntutils_set_tests tests/set.c)
 create_test(ntutils_str_tests tests/str.c)
