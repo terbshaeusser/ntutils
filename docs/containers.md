@@ -8,7 +8,7 @@ parameter a name that is used as prefix for the definitions. The container type 
 
 ## Circular Buffer
 
-Circular buffer types are defined with the `NT_CIRC_BUF(name, item_type, capacity)` macro. In case the capacity is not
+Circular buffer types are defined with the `NT_CIRC_BUF(name, value_type, capacity)` macro. In case the capacity is not
 known at compile time, the third parameter can be omitted. The capacity must then be passed to the `name_new` function.
 
 Example:
@@ -82,7 +82,7 @@ Parameters:
 
 Return:
 
-* (`size_t`) The number of items currently pushed on the given circular buffer instance.
+* (`size_t`) The number of values currently pushed on the given circular buffer instance.
 
 
 ### *_push
@@ -92,10 +92,10 @@ Include: [nt/circular.h](../include/nt/circular.h)
 Parameters:
 
 * self (`name_t*`): The circular buffer instance.
-* item (`item_type`): The item to push.
+* value (`value_type`): The value to push.
 
-Pushes a new item to the end of the given circular buffer instance. The function asserts that the buffer has enough
-space for another item.
+Pushes a new value to the end of the given circular buffer instance. The function asserts that the buffer has enough
+space for another value.
 
 
 ### *_push_ref
@@ -105,10 +105,10 @@ Include: [nt/circular.h](../include/nt/circular.h)
 Parameters:
 
 * self (`name_t*`): The circular buffer instance.
-* item (`item_type const*`): A pointer to the item to push.
+* value (`value_type const*`): A pointer to the value to push.
 
-Pushes a new item to the end of the given circular buffer instance. The function asserts that the buffer has enough 
-space for another item.
+Pushes a new value to the end of the given circular buffer instance. The function asserts that the buffer has enough 
+space for another value.
 
 
 ### *_pop
@@ -118,7 +118,7 @@ Include: [nt/circular.h](../include/nt/circular.h)
 Parameters:
 
 * self (`name_t*`): The circular buffer instance.
-* item (`item_type*`): A pointer to a place where the popped value should be stored or `NULL`.
+* value (`value_type*`): A pointer to a place where the popped value should be stored or `NULL`.
 
 Pops the next value from the beginning of a given circular buffer instance. An assert ensures that the buffer is not
 empty.
@@ -132,7 +132,7 @@ Parameters:
 
 * self (`name_t*`): The circular buffer instance.
 
-Removes all items from the given circular buffer.
+Removes all values from the given circular buffer.
 
 
 ### *_get
@@ -142,18 +142,18 @@ Include: [nt/circular.h](../include/nt/circular.h)
 Parameters:
 
 * self (`name_t const*`): The circular buffer instance.
-* index (`size_t`): The index of the item.
+* index (`size_t`): The index of the value.
 
 Return:
 
-* (`item_type const*`) A pointer to the item with the given index.
+* (`value_type const*`) A pointer to the value with the given index.
 
-Returns the item with the given index. The index is checked with an assert.
+Returns the value with the given index. The index is checked with an assert.
 
 
 ## List
 
-List types are defined with the `NT_LIST(name, item_type)` macro.
+List types are defined with the `NT_LIST(name, value_type)` macro.
 
 **Hint:** The list implementation uses a continuous block of memory in the background.
 
@@ -180,7 +180,7 @@ Include: [nt/list.h](../include/nt/list.h)
 
 Return:
 
-* (`name_t`) A new list instance with 0 items.
+* (`name_t`) A new list instance with 0 values.
 
 Creates a new list instance and returns it.
 
@@ -219,7 +219,7 @@ Parameters:
 
 Return:
 
-* (`size_t`) The number of items currently stored in the list instance.
+* (`size_t`) The number of values currently stored in the list instance.
 
 
 ### *_reserve
@@ -229,9 +229,9 @@ Include: [nt/list.h](../include/nt/list.h)
 Parameters:
 
 * self (`name_t*`): The list instance.
-* amount (`size_t`): The number of items the function should reserve space for.
+* amount (`size_t`): The number of values the function should reserve space for.
 
-Reserves space for the given number of items. If the space is already available, the list remains unchanged.
+Reserves space for the given number of values. If the space is already available, the list remains unchanged.
 
 
 ### *_shrink
@@ -242,7 +242,7 @@ Parameters:
 
 * self (`name_t*`): The list instance.
 
-Reduces the memory used by the list to the exact number of stored items.
+Reduces the memory used by the list to the exact number of stored values.
 
 
 ### *_add
@@ -252,13 +252,13 @@ Include: [nt/list.h](../include/nt/list.h)
 Parameters:
 
 * self (`name_t*`): The list instance.
-* item (`item_type`): The item to add.
+* value (`value_type`): The value to add.
 
 Return:
 
-* (`size_t`) The index inside the list where the item was inserted.
+* (`size_t`) The index inside the list where the value was inserted.
 
-Adds an item to the end of the list.
+Adds an value to the end of the list.
 
 
 ### *_add_ref
@@ -268,13 +268,13 @@ Include: [nt/list.h](../include/nt/list.h)
 Parameters:
 
 * self (`name_t*`): The list instance.
-* item (`item_type const*`): A pointer to the item to add.
+* value (`value_type const*`): A pointer to the value to add.
 
 Return:
 
-* (`size_t`) The index inside the list where the item was inserted.
+* (`size_t`) The index inside the list where the value was inserted.
 
-Adds an item to the end of the list.
+Adds an value to the end of the list.
 
 
 ### *_insert
@@ -284,10 +284,10 @@ Include: [nt/list.h](../include/nt/list.h)
 Parameters:
 
 * self (`name_t*`): The list instance.
-* index (`size_t`): The index the new item should have.
-* item (`item_type`): The item to add.
+* index (`size_t`): The index the new value should have.
+* value (`value_type`): The value to add.
 
-Inserts an item into the list at the given index. The index is checked with an assert.
+Inserts an value into the list at the given index. The index is checked with an assert.
 
 
 ### *_insert_ref
@@ -297,10 +297,10 @@ Include: [nt/list.h](../include/nt/list.h)
 Parameters:
 
 * self (`name_t*`): The list instance.
-* index (`size_t`): The index the new item should have.
-* item (`item_type const*`): A pointer to the item to add.
+* index (`size_t`): The index the new value should have.
+* value (`value_type const*`): A pointer to the value to add.
 
-Inserts an item into the list at the given index. The index is checked with an assert.
+Inserts an value into the list at the given index. The index is checked with an assert.
 
 
 ### *_remove
@@ -310,9 +310,9 @@ Include: [nt/list.h](../include/nt/list.h)
 Parameters:
 
 * self (`name_t*`): The list instance.
-* index (`size_t`): The index of the item to remove.
+* index (`size_t`): The index of the value to remove.
 
-Removes the item with the passed index. The index is checked with an assert.
+Removes the value with the passed index. The index is checked with an assert.
 
 
 ### *_clear
@@ -323,7 +323,7 @@ Parameters:
 
 * self (`name_t*`): The list instance.
 
-Removes all items from the given list.
+Removes all values from the given list.
 
 
 ### *_get
@@ -333,13 +333,13 @@ Include: [nt/list.h](../include/nt/list.h)
 Parameters:
 
 * self (`name_t const*`): The list instance.
-* index (`size_t`): The index of the item.
+* index (`size_t`): The index of the value.
 
 Return:
 
-* (`item_type const*`) A pointer to the item with the given index.
+* (`value_type const*`) A pointer to the value with the given index.
 
-Returns the item with the given index. The index is checked with an assert.
+Returns the value with the given index. The index is checked with an assert.
 
 
 ## Set

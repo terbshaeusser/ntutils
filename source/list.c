@@ -30,12 +30,12 @@ void P_nt_list_reserve(void *self, size_t amount) {
   }
 
   new_capacity = align_capacity(new_capacity);
-  size_t new_capacity_bytes = new_capacity * self2->P_item_size;
+  size_t new_capacity_bytes = new_capacity * self2->P_value_size;
 
   if (self2->P_capacity == 0) {
-    self2->P_items = nt_alloc(uint8_t, new_capacity_bytes);
+    self2->P_values = nt_alloc(uint8_t, new_capacity_bytes);
   } else {
-    self2->P_items = nt_realloc(self2->P_items, new_capacity_bytes);
+    self2->P_values = nt_realloc(self2->P_values, new_capacity_bytes);
   }
 
   self2->P_capacity = new_capacity;
@@ -49,20 +49,20 @@ void P_nt_list_shrink(void *self) {
   }
 
   if (self2->P_count == 0) {
-    nt_free(self2->P_items);
-    self2->P_items = NULL;
+    nt_free(self2->P_values);
+    self2->P_values = NULL;
   } else {
-    size_t new_capacity_bytes = self2->P_count * self2->P_item_size;
-    self2->P_items = nt_realloc(self2->P_items, new_capacity_bytes);
+    size_t new_capacity_bytes = self2->P_count * self2->P_value_size;
+    self2->P_values = nt_realloc(self2->P_values, new_capacity_bytes);
   }
 
   self2->P_capacity = self2->P_count;
 }
 
-size_t P_nt_list_insert(void *self, size_t index, void const *item) {
+size_t P_nt_list_insert(void *self, size_t index, void const *value) {
   void_list_t *self2 = self;
   nt_assert(index <= self2->P_count,
-            "Invalid insertion index %zu for list containing %zu items", index,
+            "Invalid insertion index %zu for list containing %zu values", index,
             self2->P_count);
 
   if (self2->P_count == self2->P_capacity) {
@@ -70,12 +70,13 @@ size_t P_nt_list_insert(void *self, size_t index, void const *item) {
   }
 
   if (index < self2->P_count) {
-    memmove(&self2->P_items[(index + 1) * self2->P_item_size],
-            &self2->P_items[index * self2->P_item_size],
-            (self2->P_count - index) * self2->P_item_size);
+    memmove(&self2->P_values[(index + 1) * self2->P_value_size],
+            &self2->P_values[index * self2->P_value_size],
+            (self2->P_count - index) * self2->P_value_size);
   }
 
-  memcpy(&self2->P_items[index * self2->P_item_size], item, self2->P_item_size);
+  memcpy(&self2->P_values[index * self2->P_value_size], value,
+         self2->P_value_size);
 
   ++self2->P_count;
   return index;
@@ -84,13 +85,13 @@ size_t P_nt_list_insert(void *self, size_t index, void const *item) {
 void P_nt_list_remove(void *self, size_t index) {
   void_list_t *self2 = self;
   nt_assert(index < self2->P_count,
-            "Invalid index %zu for list containing %zu items", index,
+            "Invalid index %zu for list containing %zu values", index,
             self2->P_count);
 
   if (index < self2->P_count - 1) {
-    memmove(&self2->P_items[index * self2->P_item_size],
-            &self2->P_items[(index + 1) * self2->P_item_size],
-            (self2->P_count - index - 1) * self2->P_item_size);
+    memmove(&self2->P_values[index * self2->P_value_size],
+            &self2->P_values[(index + 1) * self2->P_value_size],
+            (self2->P_count - index - 1) * self2->P_value_size);
   }
 
   --self2->P_count;
@@ -99,8 +100,8 @@ void P_nt_list_remove(void *self, size_t index) {
 void const *P_nt_list_get(void const *self, size_t index) {
   void_list_t const *self2 = self;
   nt_assert(index < self2->P_count,
-            "Invalid index %zu for list containing %zu items", index,
+            "Invalid index %zu for list containing %zu values", index,
             self2->P_count);
 
-  return &self2->P_items[index * self2->P_item_size];
+  return &self2->P_values[index * self2->P_value_size];
 }
