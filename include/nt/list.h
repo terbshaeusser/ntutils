@@ -12,6 +12,11 @@
     value_type *P_values;                                                      \
   } name##_t;                                                                  \
                                                                                \
+  typedef struct {                                                             \
+    name##_t const *P_container;                                               \
+    size_t P_index;                                                            \
+  } name##_iterator_t;                                                         \
+                                                                               \
   static inline name##_t name##_new() {                                        \
     return (name##_t){0, 0, sizeof(value_type), NULL};                         \
   }                                                                            \
@@ -60,6 +65,15 @@
   static inline value_type const *name##_get(name##_t const *self,             \
                                              size_t index) {                   \
     return P_nt_list_get(self, index);                                         \
+  }                                                                            \
+                                                                               \
+  static inline name##_iterator_t name##_iterate(name##_t const *self) {       \
+    return (name##_iterator_t){self, 0};                                       \
+  }                                                                            \
+                                                                               \
+  static inline value_type const *name##_iterator_next(                        \
+      name##_iterator_t *self) {                                               \
+    return P_nt_list_iterator_next(self);                                      \
   }
 
 void P_nt_list_reserve(void *self, size_t amount);
@@ -71,5 +85,7 @@ size_t P_nt_list_insert(void *self, size_t index, void const *value);
 void P_nt_list_remove(void *self, size_t index);
 
 void const *P_nt_list_get(void const *self, size_t index);
+
+void const *P_nt_list_iterator_next(void *self);
 
 #endif // NTUTILS_LIST_H

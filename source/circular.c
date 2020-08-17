@@ -47,6 +47,19 @@ void const *P_nt_circ_buf_dyn_get(void const *self, size_t index) {
   return get_value_ptr((void_buff_t *)self2, index);
 }
 
+void const *P_nt_circ_buf_dyn_iterator_next(void *self) {
+  void_buff_iterator_t *self2 = self;
+  void_buff_t const *container = self2->P_container;
+
+  if (self2->P_index >= container->P_count) {
+    return NULL;
+  }
+
+  void const *result = get_value_ptr((void_buff_t *)container, self2->P_index);
+  ++self2->P_index;
+  return result;
+}
+
 NT_CIRC_BUF(void_buff_fx, uint8_t, 1)
 
 static void *get_value_ptr_fx(void_buff_fx_t *self, size_t capacity,
@@ -90,4 +103,18 @@ void const *P_nt_circ_buf_fx_get(void const *self, size_t capacity,
       index, self2->P_count);
 
   return get_value_ptr_fx((void_buff_fx_t *)self2, capacity, index);
+}
+
+void const *P_nt_circ_buf_iterator_next(void *self, size_t capacity) {
+  void_buff_fx_iterator_t *self2 = self;
+  void_buff_fx_t const *container = self2->P_container;
+
+  if (self2->P_index >= container->P_count) {
+    return NULL;
+  }
+
+  void const *result =
+      get_value_ptr_fx((void_buff_fx_t *)container, capacity, self2->P_index);
+  ++self2->P_index;
+  return result;
 }
