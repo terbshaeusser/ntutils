@@ -11,7 +11,7 @@
 
   * Linear list
   * Circular buffer
-  * Queue (TODO)
+  * Queue
   * Hash set
   * Hash map
   * Multi value hash map

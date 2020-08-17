@@ -287,7 +287,7 @@ Return:
 
 * (`size_t`) The index inside the list where the value was inserted.
 
-Adds an value to the end of the list.
+Adds a value to the end of the list.
 
 
 ### *_add_ref
@@ -303,7 +303,7 @@ Return:
 
 * (`size_t`) The index inside the list where the value was inserted.
 
-Adds an value to the end of the list.
+Adds a value to the end of the list.
 
 
 ### *_insert
@@ -316,7 +316,7 @@ Parameters:
 * index (`size_t`): The index the new value should have.
 * value (`value_type`): The value to add.
 
-Inserts an value into the list at the given index. The index is checked with an assert.
+Inserts a value into the list at the given index. The index is checked with an assert.
 
 
 ### *_insert_ref
@@ -329,7 +329,7 @@ Parameters:
 * index (`size_t`): The index the new value should have.
 * value (`value_type const*`): A pointer to the value to add.
 
-Inserts an value into the list at the given index. The index is checked with an assert.
+Inserts a value into the list at the given index. The index is checked with an assert.
 
 
 ### *_remove
@@ -938,3 +938,203 @@ Return:
   to `NULL`.
 
 Advances the iterator to the next key value pair and returns it.
+
+
+## Queue
+
+Queue types are defined with the `NT_QUEUE(name, value_type)` macro.
+
+Example:
+
+```
+#include "nt/queue.h"
+
+NT_QUEUE(int_queue, int)
+
+int main() {
+  int_queue_t queue = int_queue_new();
+  int_queue_add(&queue, 2);
+  int i = int_queue_take(&queue);
+  int_queue_free(&queue);
+  return 0;
+}
+```
+
+
+### *_new
+
+Include: [nt/queue.h](../include/nt/queue.h)
+
+Return:
+
+* (`name_t`) A new queue instance with 0 values.
+
+Creates a new queue instance and returns it.
+
+
+### *_free
+
+Include: [nt/queue.h](../include/nt/queue.h)
+
+Parameters:
+
+* self (`name_t*`): The queue instance to release.
+
+Releases a previously initialized queue.
+
+
+### *_capacity
+
+Include: [nt/queue.h](../include/nt/queue.h)
+
+Parameters:
+
+* self (`name_t const*`): The queue instance.
+
+Return:
+
+* (`size_t`) The capacity of the given queue instance.
+
+
+### *_count
+
+Include: [nt/queue.h](../include/nt/queue.h)
+
+Parameters:
+
+* self (`name_t const*`): The queue instance.
+
+Return:
+
+* (`size_t`) The number of values currently stored in the queue instance.
+
+
+### *_reserve
+
+Include: [nt/queue.h](../include/nt/queue.h)
+
+Parameters:
+
+* self (`name_t*`): The queue instance.
+* amount (`size_t`): The number of values the function should reserve space for.
+
+Reserves space for the given number of values. If the space is already available, the queue remains unchanged.
+
+
+### *_add
+
+Include: [nt/queue.h](../include/nt/queue.h)
+
+Parameters:
+
+* self (`name_t*`): The queue instance.
+* value (`value_type`): The value to add.
+
+Adds a value to the end of the queue.
+
+
+### *_add_ref
+
+Include: [nt/queue.h](../include/nt/queue.h)
+
+Parameters:
+
+* self (`name_t*`): The queue instance.
+* value (`value_type const*`): A pointer to the value to add.
+
+Adds a value to the end of the queue.
+
+
+### *_peek
+
+Include: [nt/queue.h](../include/nt/queue.h)
+
+Parameters:
+
+* self (`name_t const*`): The queue instance.
+
+Return:
+
+* (`value_type`) The value at the beginning of the queue. If no values exist in the queue, a panic is raised.
+
+
+### *_peek_ref
+
+Include: [nt/queue.h](../include/nt/queue.h)
+
+Parameters:
+
+* self (`name_t const*`): The queue instance.
+
+Return:
+
+* (`value_type const*`) A pointer to the value at the beginning of the queue. If no values exist in the queue, a panic
+  is raised.
+
+
+### *_take
+
+Include: [nt/queue.h](../include/nt/queue.h)
+
+Parameters:
+
+* self (`name_t const*`): The queue instance.
+
+Return:
+
+* (`value_type`) The value at the beginning of the queue.
+
+Removes the first value in the queue and returns it. If no values exist in the queue, a panic is raised.
+
+
+### *_take_ref
+
+Include: [nt/queue.h](../include/nt/queue.h)
+
+Parameters:
+
+* self (`name_t const*`): The queue instance.
+* dst (`value_type*`): Pointer to the memory where the value should be stored.
+
+Removes the first value in the queue and stores it in the memory pointed by `dst`. If no values exist in the queue, a
+panic is raised.
+
+
+### *_clear
+
+Include: [nt/queue.h](../include/nt/queue.h)
+
+Parameters:
+
+* self (`name_t*`): The queue instance.
+
+Removes all values from the given queue.
+
+
+### *_iterate
+
+Include: [nt/queue.h](../include/nt/queue.h)
+
+Parameters:
+
+* self (`name_t const*`): The queue instance.
+
+Return:
+
+* (`name_iterator_t`) An iterator that can be used to iterate over values in the queue. Modifications on the queue
+  invalidate any existing iterator.
+
+
+### *_iterator_next
+
+Include: [nt/queue.h](../include/nt/queue.h)
+
+Parameters:
+
+* self (`name_iterator_t*`): A queue iterator instance.
+
+Return:
+
+* (`value_type const*`) A pointer to the next value or `NULL` if no more values exist.
+
+Advances the iterator to the next value and returns it.
